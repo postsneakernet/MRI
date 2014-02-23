@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package mri_scanner;
 
 
@@ -24,7 +18,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class FXMLDocumentController extends AnchorPane implements Initializable {
     
-        private Label label;
+    private Label label;
     private MRIPrototype application;
     @FXML
     private Button settings;
@@ -45,31 +39,30 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private ImageView mainImage;
     
-        private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void handleButtonAction(ActionEvent event) {
+	    System.out.println("You clicked me!");
+	    label.setText("Hello World!");
     }
         
-         public void setImages(ActionEvent event){
-           imageChoose1.setImage(fileManager.setImage("MriPics\\Hirnmetastase_MRT-T1_KM.jpg"));
-           imageChoose2.setImage(fileManager.setImage("MriPics\\MRI_T2_Brain_axial_image.jpg"));
-           imageChoose3.setImage(fileManager.setImage("MriPics\\Tumor_BrainstemGlioma2.jpg"));
-           imageChoose4.setImage(fileManager.setImage("MriPics\\mri1.jpg"));
-           mainImage.setImage(fileManager.setImage("MriPics\\mri2.jpg"));
-        }
+    public void setImages(ActionEvent event) {
+		imageChoose1.setImage(fileManager.setImage("MriPics\\Hirnmetastase_MRT-T1_KM.jpg"));
+		imageChoose2.setImage(fileManager.setImage("MriPics\\MRI_T2_Brain_axial_image.jpg"));
+		imageChoose3.setImage(fileManager.setImage("MriPics\\Tumor_BrainstemGlioma2.jpg"));
+		imageChoose4.setImage(fileManager.setImage("MriPics\\mri1.jpg"));
+		mainImage.setImage(fileManager.setImage("MriPics\\mri2.jpg"));
+    }
          
-         public void analyzeImage(ActionEvent event){
-               mainImage.setImage(fileManager.setImage(Analyze.analyzeImage("MriPics\\mri2.jpg")));
-         }
+    public void analyzeImage(ActionEvent event) {
+    	mainImage.setImage(fileManager.setImage(Analyze.analyzeImage("MriPics\\mri2.jpg")));
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    	
     }    
     
-       void setApp(MRIPrototype aThis) {
-        this.application = aThis;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   	void setApp(MRIPrototype aThis) {
+	    this.application = aThis;
+	    throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }
