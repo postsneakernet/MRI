@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
 public class Analyze {
 	
 	public Analyze() {
@@ -18,21 +17,24 @@ public class Analyze {
 		BufferedImage imageOut;
 		String newFileName = null;
 		
+		final int MIN_RGB = Integer.parseInt("000000", 16);
+		final int MAX_RGB = Integer.parseInt("111111", 16);
+		final int RED = Integer.parseInt("FF0000", 16);
+		
 		try {
-			int minRGB = Integer.parseInt("000000", 16);
 			imageIn = ImageIO.read(new File(fileName));
 			newFileName = fileName + "_analyzed.jpg";
 			File output = new File(newFileName);
 			imageOut = new BufferedImage(imageIn.getWidth(), imageIn.getHeight(),imageIn.getType());
 			
-                        System.out.printf("running on %s %n", fileName);
+            System.out.printf("running on %s %n", fileName);
 //			System.out.printf("image height %s: image width %s %n", imageIn.getHeight(), imageIn.getWidth());
 			for (int i = 0; i < imageIn.getWidth(); i++) {
 				for (int j = 0; j < imageIn.getHeight(); j++) {
 //					System.out.printf("i %s :j %s%n", i, j);
-					if (Math.abs(imageIn.getRGB(i, j)) <= Integer.parseInt("111111", 16) &&
-							Math.abs(imageIn.getRGB(i, j)) > minRGB) {
-						imageOut.setRGB(i, j, Integer.parseInt("FF0000", 16));
+					if (Math.abs(imageIn.getRGB(i, j)) <= MAX_RGB &&
+							Math.abs(imageIn.getRGB(i, j)) > MIN_RGB) {
+						imageOut.setRGB(i, j, RED);
 					}
 					else {
 						imageOut.setRGB(i, j, imageIn.getRGB(i, j));
@@ -43,7 +45,6 @@ public class Analyze {
 			ImageIO.write(imageOut, "jpg", output);
 		}
 		catch (IOException | IllegalArgumentException e) {
-			System.out.printf("Exception from try block %n");
 			e.printStackTrace();
 		}
 		
