@@ -11,9 +11,9 @@
 <AnchorPane layoutY="6.0" prefHeight="77.0" prefWidth="923.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 <children>
 <VBox layoutX="836.0" layoutY="18.0" AnchorPane.rightAnchor="33.0">
-<children><Button fx:id="settings" layoutX="827.0" layoutY="19.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Settings" AnchorPane.rightAnchor="91.8125" /><Button fx:id="selectFolder" layoutX="775.0" layoutY="60.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Select Folder" AnchorPane.rightAnchor="40.0" />
+<children><Button fx:id="buttonSettings" layoutX="827.0" layoutY="19.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Settings" AnchorPane.rightAnchor="91.8125" /><Button fx:id="buttonSelectFolder" layoutX="775.0" layoutY="60.0" mnemonicParsing="false" onAction="#getImageDirectory" prefHeight="25.0" prefWidth="98.0" text="Select Folder" AnchorPane.rightAnchor="40.0" />
 </children>
-</VBox><Button fx:id="backButton" layoutX="22.1875" layoutY="27.0" mnemonicParsing="false" onAction="#setImages" text="Button" AnchorPane.leftAnchor="22.1875" />
+</VBox><Button fx:id="buttonBack" layoutX="22.1875" layoutY="27.0" mnemonicParsing="false" onAction="#setImages" text="Back" AnchorPane.leftAnchor="22.1875" />
 <HBox alignment="CENTER" layoutX="423.0" layoutY="30.0" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="423.0" AnchorPane.topAnchor="30.0">
 <children><Label fx:id="progName" layoutX="423.0" layoutY="30.0" prefHeight="17.0" prefWidth="77.0" text="MRI Analysis " />
 </children>
@@ -29,7 +29,7 @@
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="126.0" prefWidth="558.0">
 <children>
-<HBox layoutY="-2.0" prefHeight="127.0" prefWidth="558.0" spacing="15.0">
+<HBox fx:id="imageHBox" layoutY="-2.0" prefHeight="127.0" prefWidth="558.0" spacing="15.0">
 <children><ImageView fx:id="imageChoose1" fitHeight="77.0" fitWidth="85.0" layoutX="19.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" /><ImageView fx:id="imageChoose2" fitHeight="77.0" fitWidth="86.0" layoutX="104.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" /><ImageView fx:id="imageChoose3" fitHeight="77.0" fitWidth="86.0" layoutX="190.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" /><ImageView fx:id="imageChoose4" fitHeight="77.0" fitWidth="86.0" layoutX="280.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
 </children>
 </HBox>
@@ -38,7 +38,7 @@
 </ScrollPane>
 </children></AnchorPane>
     <AnchorPane layoutX="23.0" layoutY="238.0" minHeight="0.0" minWidth="0.0" prefHeight="438.0" prefWidth="558.0">
-<children><ImageView fx:id="mainImage" fitHeight="364.0" fitWidth="368.0" layoutX="51.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" /><Button layoutX="227.0" layoutY="399.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" />
+<children><ImageView fx:id="mainImage" fitHeight="364.0" fitWidth="368.0" layoutX="51.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" /><Button fx:id="buttonAnalyze" layoutX="227.0" layoutY="399.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" />
 </children></AnchorPane>
 </children>
 </VBox>
