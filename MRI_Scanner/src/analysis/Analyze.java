@@ -27,7 +27,7 @@ public class Analyze {
 			File output = new File(newFileName);
 			imageOut = new BufferedImage(imageIn.getWidth(), imageIn.getHeight(),imageIn.getType());
 			
-            System.out.printf("running on %s %n", fileName);
+            System.out.printf("Analyzing image %s %n", fileName);
 //			System.out.printf("image height %s: image width %s %n", imageIn.getHeight(), imageIn.getWidth());
 			for (int i = 0; i < imageIn.getWidth(); i++) {
 				for (int j = 0; j < imageIn.getHeight(); j++) {

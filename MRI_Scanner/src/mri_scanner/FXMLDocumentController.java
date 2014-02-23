@@ -54,7 +54,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     // TODO or (preferably) implement ImageView buttons to handle selecting any image for main image
     public void setImages(ActionEvent event) {
     	if (dir != null) {
-    		mainImage.setImage(fileManager.setImage(dir + sep + "mri2.jpg"));
+    		mainImage.setImage(FileManager.setImage(dir + sep + "mri2.jpg"));
     	}
     	else {
     		System.out.println("No directory selected!");
@@ -75,16 +75,16 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	if (file != null) {
     		dir = file.getPath();
     		System.out.println("Loading images in: " + dir);
-    		imageChoose1.setImage(fileManager.setImage(dir + sep + file.listFiles()[0].getName()));
-    		imageChoose2.setImage(fileManager.setImage(dir + sep + file.listFiles()[1].getName()));
-    		imageChoose3.setImage(fileManager.setImage(dir + sep + file.listFiles()[2].getName()));
-    		imageChoose4.setImage(fileManager.setImage(dir + sep + file.listFiles()[3].getName()));
+    		imageChoose1.setImage(FileManager.setImage(dir + sep + file.listFiles()[0].getName()));
+    		imageChoose2.setImage(FileManager.setImage(dir + sep + file.listFiles()[1].getName()));
+    		imageChoose3.setImage(FileManager.setImage(dir + sep + file.listFiles()[2].getName()));
+    		imageChoose4.setImage(FileManager.setImage(dir + sep + file.listFiles()[3].getName()));
     	}
     }
         
     public void analyzeImage(ActionEvent event) {
     	if (dir != null) {
-    		mainImage.setImage(fileManager.setImage(Analyze.analyzeImage(dir + sep + "mri2.jpg")));
+    		mainImage.setImage(FileManager.setImage(Analyze.analyzeImage(dir + sep + "mri2.jpg")));
     	}
     	else {
     		System.out.println("No directory selected!");
