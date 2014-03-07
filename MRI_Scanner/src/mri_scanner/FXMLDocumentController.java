@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -45,7 +46,24 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private ImageView imageChoose4;
     @FXML
+    private ImageView imageChoose5;
+    @FXML
+    private ImageView imageChoose6;
+    @FXML
     private ImageView mainImage;
+    
+    @FXML
+    private Button buttonImage1;
+    @FXML
+    private Button buttonImage2;
+    @FXML
+    private Button buttonImage3;
+    @FXML
+    private Button buttonImage4;
+    @FXML
+    private Button buttonImage5;
+    @FXML
+    private Button buttonImage6;
     
     private String dir = null;
     private String sep = File.separator;
@@ -59,6 +77,42 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	else {
     		System.out.println("No directory selected!");
     	}
+    }
+    
+    public void setImage1(ActionEvent event){
+    	Image temp = mainImage.getImage();
+    	mainImage.setImage(imageChoose1.getImage());
+    	imageChoose1.setImage(temp);
+    }
+    
+    public void setImage2(ActionEvent event){
+    	Image temp = mainImage.getImage();
+    	mainImage.setImage(imageChoose2.getImage());
+    	imageChoose2.setImage(temp);
+    }
+    
+    public void setImage3(ActionEvent event){
+    	Image temp = mainImage.getImage();
+    	mainImage.setImage(imageChoose3.getImage());
+    	imageChoose3.setImage(temp);
+    }
+    
+    public void setImage4(ActionEvent event){
+    	Image temp = mainImage.getImage();
+    	mainImage.setImage(imageChoose4.getImage());
+    	imageChoose4.setImage(temp);
+    }
+    
+    public void setImage5(ActionEvent event){
+    	Image temp = mainImage.getImage();
+    	mainImage.setImage(imageChoose5.getImage());
+    	imageChoose5.setImage(temp);
+    }
+    
+    public void setImage6(ActionEvent event){
+    	Image temp = mainImage.getImage();
+    	mainImage.setImage(imageChoose6.getImage());
+    	imageChoose6.setImage(temp);
     }
     
     public void getImageDirectory(ActionEvent event) {
