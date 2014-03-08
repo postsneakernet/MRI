@@ -50,6 +50,10 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private ImageView imageChoose6;
     @FXML
+    private ImageView imageChoose7;
+    @FXML
+    private ImageView imageChoose8;
+    @FXML
     private ImageView mainImage;
     
     @FXML
@@ -64,57 +68,58 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private Button buttonImage5;
     @FXML
     private Button buttonImage6;
+    @FXML
+    private Button buttonImage7;
+    @FXML
+    private Button buttonImage8;
     
     private String dir = null;
     private String sep = File.separator;
+    private String[] fileNames = new String[8];
+    private String currMain = null;
     
-    // TODO Method is called from back button: change button label to "Select" (for temp prototype)
-    // TODO or (preferably) implement ImageView buttons to handle selecting any image for main image
-    public void setImages(ActionEvent event) {
-    	if (dir != null) {
-    		mainImage.setImage(FileManager.setImage(dir + sep + "mri2.jpg"));
-    	}
-    	else {
-    		System.out.println("No directory selected!");
-    	}
-    }
-    
-    public void setImage1(ActionEvent event){
-    	Image temp = mainImage.getImage();
+    // TODO Find more efficient use for these method calls
+    public void setImage1(ActionEvent event) {
     	mainImage.setImage(imageChoose1.getImage());
-    	imageChoose1.setImage(temp);
+    	currMain = fileNames[0];
     }
     
-    public void setImage2(ActionEvent event){
-    	Image temp = mainImage.getImage();
+    public void setImage2(ActionEvent event) {
     	mainImage.setImage(imageChoose2.getImage());
-    	imageChoose2.setImage(temp);
+    	currMain = fileNames[1];
     }
     
-    public void setImage3(ActionEvent event){
-    	Image temp = mainImage.getImage();
+    public void setImage3(ActionEvent event) {
     	mainImage.setImage(imageChoose3.getImage());
-    	imageChoose3.setImage(temp);
+    	currMain = fileNames[2];
     }
     
-    public void setImage4(ActionEvent event){
-    	Image temp = mainImage.getImage();
+    public void setImage4(ActionEvent event) {
     	mainImage.setImage(imageChoose4.getImage());
-    	imageChoose4.setImage(temp);
+    	currMain = fileNames[3];
     }
     
-    public void setImage5(ActionEvent event){
-    	Image temp = mainImage.getImage();
+    public void setImage5(ActionEvent event) {
     	mainImage.setImage(imageChoose5.getImage());
-    	imageChoose5.setImage(temp);
+    	currMain = fileNames[4];
     }
     
-    public void setImage6(ActionEvent event){
-    	Image temp = mainImage.getImage();
+    public void setImage6(ActionEvent event) {
     	mainImage.setImage(imageChoose6.getImage());
-    	imageChoose6.setImage(temp);
+    	currMain = fileNames[5];
     }
     
+    public void setImage7(ActionEvent event) {
+    	mainImage.setImage(imageChoose7.getImage());
+    	currMain = fileNames[6];
+    }
+    
+    public void setImage8(ActionEvent event) {
+    	mainImage.setImage(imageChoose8.getImage());
+    	currMain = fileNames[7];
+    }
+    
+    // TODO move to file manager
     public void getImageDirectory(ActionEvent event) {
     	String initialDir = "user.dir";
     	
@@ -124,21 +129,43 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	
     	File file = directoryChooser.showDialog(null);
     	
-    	// TODO to modify code to work on any number of images
-    	// TODO also check to operate only on images to avoid crash
+    	// TODO modify code to work on any number of images
+    	// TODO check to operate only on images to avoid crash and ignore analyzed jpgs
     	if (file != null) {
     		dir = file.getPath();
     		System.out.println("Loading images in: " + dir);
+    		
+    		
     		imageChoose1.setImage(FileManager.setImage(dir + sep + file.listFiles()[0].getName()));
+    		fileNames[0] = file.listFiles()[0].getName();
+    		
     		imageChoose2.setImage(FileManager.setImage(dir + sep + file.listFiles()[1].getName()));
+    		fileNames[1] = file.listFiles()[1].getName();
+    		
     		imageChoose3.setImage(FileManager.setImage(dir + sep + file.listFiles()[2].getName()));
+    		fileNames[2] = file.listFiles()[2].getName();
+    		
     		imageChoose4.setImage(FileManager.setImage(dir + sep + file.listFiles()[3].getName()));
+    		fileNames[3] = file.listFiles()[3].getName();
+    		
+    		imageChoose5.setImage(FileManager.setImage(dir + sep + file.listFiles()[4].getName()));
+    		fileNames[4] = file.listFiles()[4].getName();
+    		
+    		imageChoose6.setImage(FileManager.setImage(dir + sep + file.listFiles()[5].getName()));
+    		fileNames[5] = file.listFiles()[5].getName();
+    		
+    		imageChoose7.setImage(FileManager.setImage(dir + sep + file.listFiles()[6].getName()));
+    		fileNames[6] = file.listFiles()[6].getName();
+    		
+    		imageChoose8.setImage(FileManager.setImage(dir + sep + file.listFiles()[7].getName()));
+    		fileNames[7] = file.listFiles()[7].getName();
     	}
     }
         
+    // TODO save in Analyze subfolder
     public void analyzeImage(ActionEvent event) {
     	if (dir != null) {
-    		mainImage.setImage(FileManager.setImage(Analyze.analyzeImage(dir + sep + "mri2.jpg")));
+    		mainImage.setImage(FileManager.setImage(Analyze.analyzeImage(dir + sep + currMain)));
     	}
     	else {
     		System.out.println("No directory selected!");

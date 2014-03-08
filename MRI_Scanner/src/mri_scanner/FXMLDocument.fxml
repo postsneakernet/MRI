@@ -8,69 +8,67 @@
 
 <AnchorPane id="AnchorPane" prefHeight="690.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mri_scanner.FXMLDocumentController">
 <children>
-<AnchorPane layoutY="6.0" prefHeight="77.0" prefWidth="923.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane layoutY="6.0" prefHeight="164.0" prefWidth="1083.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 <children>
 <VBox layoutX="836.0" layoutY="18.0" AnchorPane.rightAnchor="33.0">
 <children><Button fx:id="buttonSettings" layoutX="827.0" layoutY="19.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Settings" AnchorPane.rightAnchor="91.8125" /><Button fx:id="buttonSelectFolder" layoutX="775.0" layoutY="60.0" mnemonicParsing="false" onAction="#getImageDirectory" prefHeight="25.0" prefWidth="98.0" text="Select Folder" AnchorPane.rightAnchor="40.0" />
 </children>
-</VBox><Button fx:id="buttonBack" layoutX="22.1875" layoutY="27.0" mnemonicParsing="false" onAction="#setImages" text="Back" AnchorPane.leftAnchor="22.1875" />
+</VBox><Button fx:id="buttonBack" layoutX="22.1875" layoutY="27.0" mnemonicParsing="false" text="Back" AnchorPane.leftAnchor="22.1875" />
 <HBox alignment="CENTER" layoutX="423.0" layoutY="30.0" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="423.0" AnchorPane.topAnchor="30.0">
 <children><Label fx:id="progName" layoutX="423.0" layoutY="30.0" prefHeight="17.0" prefWidth="77.0" text="MRI Analysis " />
 </children>
-</HBox>
-</children>
-</AnchorPane>
-<HBox alignment="CENTER" layoutX="22.0" layoutY="87.0" spacing="20.0" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="87.0">
-<children>
-    <AnchorPane layoutX="25.0" layoutY="87.0" minHeight="0.0" minWidth="0.0" prefHeight="161.0" prefWidth="417.0">
-<children>
-<VBox layoutX="13.0" layoutY="4.0">
-<children><GridPane layoutX="13.0" layoutY="4.0" prefHeight="190.0" prefWidth="375.0">
+</HBox><VBox layoutY="112.0" prefHeight="101.0" prefWidth="1079.0">
+<children><GridPane prefHeight="89.0" prefWidth="1075.0">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+<ColumnConstraints hgrow="SOMETIMES" maxWidth="615.0" minWidth="10.0" prefWidth="180.0" />
+<ColumnConstraints hgrow="SOMETIMES" maxWidth="615.0" minWidth="10.0" prefWidth="180.0" />
+<ColumnConstraints hgrow="SOMETIMES" maxWidth="615.0" minWidth="10.0" prefWidth="180.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="615.0" minWidth="10.0" prefWidth="180.0" />
+<ColumnConstraints hgrow="SOMETIMES" maxWidth="615.0" minWidth="10.0" prefWidth="180.0" />
+<ColumnConstraints hgrow="SOMETIMES" maxWidth="534.0" minWidth="10.0" prefWidth="180.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="534.0" minWidth="10.0" prefWidth="180.0" />
+<ColumnConstraints hgrow="SOMETIMES" maxWidth="534.0" minWidth="10.0" prefWidth="180.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="125.0" minHeight="10.0" prefHeight="78.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="147.0" minHeight="7.0" prefHeight="81.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="180.0" vgrow="NEVER" />
   </rowConstraints>
+<children><StackPane prefHeight="75.0" prefWidth="133.0">
+<children><ImageView id="imageChoose1" fx:id="imageChoose1" fitHeight="89.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage1" fx:id="buttonImage1" alignment="CENTER" mnemonicParsing="false" onAction="#setImage1" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane><StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+<children><ImageView id="imageChoose2" fx:id="imageChoose2" fitHeight="97.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage2" fx:id="buttonImage2" alignment="CENTER" mnemonicParsing="false" onAction="#setImage2" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane><StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+<children><ImageView id="imageChoose3" fx:id="imageChoose3" fitHeight="94.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage3" fx:id="buttonImage3" alignment="CENTER" mnemonicParsing="false" onAction="#setImage3" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane><StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
+<children><ImageView id="imageChoose4" fx:id="imageChoose4" fitHeight="87.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage4" fx:id="buttonImage4" alignment="CENTER" mnemonicParsing="false" onAction="#setImage4" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane><StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4">
+<children><ImageView id="imageChoose5" fx:id="imageChoose5" fitHeight="88.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage5" fx:id="buttonImage5" alignment="CENTER" mnemonicParsing="false" onAction="#setImage5" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane><StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="5">
+<children><ImageView id="imageChoose6" fx:id="imageChoose6" fitHeight="87.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage6" fx:id="buttonImage6" alignment="CENTER" mnemonicParsing="false" onAction="#setImage6" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane><StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6">
+<children><ImageView id="imageChoose7" fx:id="imageChoose7" fitHeight="85.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage7" fx:id="buttonImage7" alignment="CENTER" mnemonicParsing="false" onAction="#setImage7" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane><StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="7">
+<children><ImageView id="imageChoose8" fx:id="imageChoose8" fitHeight="88.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" /><Button id="buttonImage8" fx:id="buttonImage8" alignment="CENTER" mnemonicParsing="false" onAction="#setImage8" opacity="0.0" prefHeight="82.0" prefWidth="121.0" text="Button" />
+</children></StackPane>
+</children>
+</GridPane>
+</children></VBox>
+</children>
+</AnchorPane>
+<HBox alignment="CENTER" layoutX="22.0" layoutY="87.0" prefHeight="462.0" prefWidth="1036.0" spacing="20.0" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="205.0">
 <children>
-<StackPane layoutY="-2.0" prefHeight="78.0" prefWidth="111.0">
-<children><ImageView fx:id="imageChoose1" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" /><Button fx:id="buttonImage1" layoutY="2.0" mnemonicParsing="false" onAction="#setImage1" opacity="0.0" prefHeight="90.0" prefWidth="90.0" text="Button" />
-</children>
-</StackPane>
-<StackPane layoutX="108.0" layoutY="-2.0" GridPane.columnIndex="1">
-<children><ImageView fx:id="imageChoose2" fitHeight="90.0" fitWidth="90.0" layoutX="104.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" /><Button fx:id="buttonImage2" mnemonicParsing="false" onAction="#setImage2" opacity="0.0" prefHeight="90.0" prefWidth="90.0" text="Button" />
-</children>
-</StackPane>
-<StackPane layoutX="120.0" layoutY="-2.0" GridPane.rowIndex="1">
-<children><ImageView fx:id="imageChoose3" fitHeight="90.0" fitWidth="90.0" layoutX="253.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" /><Button fx:id="buttonImage3" layoutX="120.0" layoutY="14.0" mnemonicParsing="false" onAction="#setImage3" opacity="0.0" prefHeight="90.0" prefWidth="90.0" text="Button" />
-</children>
-</StackPane>
-<StackPane layoutX="151.0" layoutY="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-<children><ImageView fx:id="imageChoose4" fitHeight="90.0" fitWidth="90.0" layoutX="247.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" /><Button fx:id="buttonImage4" layoutX="151.0" layoutY="11.0" mnemonicParsing="false" onAction="#setImage4" opacity="0.0" prefHeight="90.0" prefWidth="90.0" text="Button" />
-</children>
-</StackPane><StackPane layoutX="151.0" layoutY="10.0" GridPane.columnIndex="2">
+    <AnchorPane layoutX="25.0" layoutY="87.0" minHeight="0.0" minWidth="0.0" prefHeight="462.0" prefWidth="455.0">
 <children>
-<ImageView fx:id="imageChoose5" fitHeight="90.0" fitWidth="90.0" layoutX="247.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-<Button fx:id="buttonImage5" layoutX="151.0" layoutY="11.0" mnemonicParsing="false" onAction="#setImage5" opacity="0.0" prefHeight="90.0" prefWidth="90.0" text="Button" />
-</children>
-</StackPane><StackPane layoutX="151.0" layoutY="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-<children>
-<ImageView fx:id="imageChoose6" fitHeight="90.0" fitWidth="90.0" layoutX="247.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-<Button fx:id="buttonImage6" layoutX="151.0" layoutY="11.0" mnemonicParsing="false" onAction="#setImage6" opacity="0.0" prefHeight="90.0" prefWidth="90.0" text="Button" />
-</children>
-</StackPane>
-</children>
-</GridPane><AnchorPane layoutX="28.0" layoutY="204.0" prefHeight="342.0" prefWidth="344.0">
-<children><Button fx:id="buttonAnalyze" layoutX="134.0" layoutY="303.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" /><ImageView fx:id="mainImage" fitHeight="239.0" fitWidth="301.0" layoutX="22.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
+<VBox layoutX="13.0" layoutY="17.0" prefHeight="440.0" prefWidth="392.0">
+<children><AnchorPane layoutX="28.0" layoutY="204.0" prefHeight="437.0" prefWidth="375.0">
+<children><Button fx:id="buttonAnalyze" layoutX="158.0" layoutY="384.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" /><ImageView fx:id="mainImage" fitHeight="347.0" fitWidth="348.0" layoutX="22.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
 </children></AnchorPane>
 </children>
 </VBox>
 </children></AnchorPane>
-<VBox layoutX="442.0" layoutY="87.0" HBox.hgrow="SOMETIMES">
-<children><GridPane layoutX="491.0" layoutY="87.0" prefHeight="175.0" prefWidth="419.0">
+<AnchorPane prefHeight="462.0" prefWidth="498.0">
+<children>
+<VBox layoutX="39.0" layoutY="106.0" prefHeight="356.0" prefWidth="560.0" HBox.hgrow="SOMETIMES">
+<children><GridPane layoutX="491.0" layoutY="87.0" prefHeight="116.0" prefWidth="564.0">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -82,7 +80,7 @@
   </rowConstraints>
 <children><Label text="Label" /><Label text="Label" GridPane.columnIndex="1" /><Label text="Label" GridPane.rowIndex="1" /><Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Label text="Label" GridPane.rowIndex="2" /><Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 </children>
-</GridPane><ScatterChart layoutX="442.0" layoutY="255.0" prefHeight="299.0" prefWidth="457.0">
+</GridPane><ScatterChart layoutX="442.0" layoutY="255.0" prefHeight="255.0" prefWidth="448.0">
   <xAxis>
     <CategoryAxis prefHeight="23.0" prefWidth="425.0" side="BOTTOM" />
   </xAxis>
@@ -92,6 +90,8 @@
 </ScatterChart>
 </children>
 </VBox>
+</children>
+</AnchorPane>
 </children>
 </HBox>
 </children>

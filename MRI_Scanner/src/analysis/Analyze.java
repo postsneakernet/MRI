@@ -16,9 +16,13 @@ public class Analyze {
 		BufferedImage imageIn;
 		BufferedImage imageOut;
 		String newFileName = null;
+//		String sep = File.separator;
+//		String dir = currDir + sep + "Analyzed";
+//		File fileDir = new File(dir);
+//		fileDir.mkdir();
 		
 		final int MIN_RGB = Integer.parseInt("000000", 16);
-		final int MAX_RGB = Integer.parseInt("111111", 16);
+		final int MAX_RGB = Integer.parseInt("444444", 16);
 		final int RED = Integer.parseInt("FF0000", 16);
 		
 		try {
