@@ -81,46 +81,63 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private String sep = File.separator;
     private List<String> fileNames = new  ArrayList<String>();
     private String currMain = null;
+    private final int MRI_IMAGE_AMOUNT = 8;
     
     // TODO Find more efficient use for these method calls
     public void setImage1(ActionEvent event) {
-    	mainImage.setImage(imageChoose1.getImage());
-    	currMain = fileNames.get(0);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose1.getImage());
+    		currMain = fileNames.get(0);
+    	}
     }
     
     public void setImage2(ActionEvent event) {
-    	mainImage.setImage(imageChoose2.getImage());
-    	currMain = fileNames.get(1);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose2.getImage());
+    		currMain = fileNames.get(1);
+    	}
     }
     
     public void setImage3(ActionEvent event) {
-    	mainImage.setImage(imageChoose3.getImage());
-    	currMain = fileNames.get(2);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose3.getImage());
+    		currMain = fileNames.get(2);
+    	}
     }
     
     public void setImage4(ActionEvent event) {
-    	mainImage.setImage(imageChoose4.getImage());
-    	currMain = fileNames.get(3);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose4.getImage());
+    		currMain = fileNames.get(3);
+    	}
     }
     
     public void setImage5(ActionEvent event) {
-    	mainImage.setImage(imageChoose5.getImage());
-    	currMain = fileNames.get(4);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose5.getImage());
+    		currMain = fileNames.get(4);
+    	}
     }
     
     public void setImage6(ActionEvent event) {
-    	mainImage.setImage(imageChoose6.getImage());
-    	currMain = fileNames.get(5);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose6.getImage());
+    		currMain = fileNames.get(5);
+    	}
     }
     
     public void setImage7(ActionEvent event) {
-    	mainImage.setImage(imageChoose7.getImage());
-    	currMain = fileNames.get(6);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose7.getImage());
+    		currMain = fileNames.get(6);
+    	}
     }
     
     public void setImage8(ActionEvent event) {
-    	mainImage.setImage(imageChoose8.getImage());
-    	currMain = fileNames.get(7);
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		mainImage.setImage(imageChoose8.getImage());
+    		currMain = fileNames.get(7);
+    	}
     }
     
     // TODO move to file manager
@@ -133,8 +150,6 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	
     	File file = directoryChooser.showDialog(null);
     	
-    	// TODO modify code to work on any number of images
-    	// TODO check to operate only on images to avoid crash and ignore analyzed jpgs
     	if (file != null) {
     		dir = file.getPath();
     		System.out.println("Loading images in: " + dir);
@@ -154,7 +169,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     			}
     		}
     		
-    		if (fileNames.size() >= 8) {
+    		if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
     		imageChoose1.setImage(FileManager.setImage(dir + sep + fileNames.get(0)));
     		imageChoose2.setImage(FileManager.setImage(dir + sep + fileNames.get(1)));
     		imageChoose3.setImage(FileManager.setImage(dir + sep + fileNames.get(2)));
