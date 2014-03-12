@@ -5,7 +5,11 @@ import analysis.Analyze;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import javax.activation.MimetypesFileTypeMap;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,48 +79,48 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     
     private String dir = null;
     private String sep = File.separator;
-    private String[] fileNames = new String[8];
+    private List<String> fileNames = new  ArrayList<String>();
     private String currMain = null;
     
     // TODO Find more efficient use for these method calls
     public void setImage1(ActionEvent event) {
     	mainImage.setImage(imageChoose1.getImage());
-    	currMain = fileNames[0];
+    	currMain = fileNames.get(0);
     }
     
     public void setImage2(ActionEvent event) {
     	mainImage.setImage(imageChoose2.getImage());
-    	currMain = fileNames[1];
+    	currMain = fileNames.get(1);
     }
     
     public void setImage3(ActionEvent event) {
     	mainImage.setImage(imageChoose3.getImage());
-    	currMain = fileNames[2];
+    	currMain = fileNames.get(2);
     }
     
     public void setImage4(ActionEvent event) {
     	mainImage.setImage(imageChoose4.getImage());
-    	currMain = fileNames[3];
+    	currMain = fileNames.get(3);
     }
     
     public void setImage5(ActionEvent event) {
     	mainImage.setImage(imageChoose5.getImage());
-    	currMain = fileNames[4];
+    	currMain = fileNames.get(4);
     }
     
     public void setImage6(ActionEvent event) {
     	mainImage.setImage(imageChoose6.getImage());
-    	currMain = fileNames[5];
+    	currMain = fileNames.get(5);
     }
     
     public void setImage7(ActionEvent event) {
     	mainImage.setImage(imageChoose7.getImage());
-    	currMain = fileNames[6];
+    	currMain = fileNames.get(6);
     }
     
     public void setImage8(ActionEvent event) {
     	mainImage.setImage(imageChoose8.getImage());
-    	currMain = fileNames[7];
+    	currMain = fileNames.get(7);
     }
     
     // TODO move to file manager
@@ -134,31 +138,32 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	if (file != null) {
     		dir = file.getPath();
     		System.out.println("Loading images in: " + dir);
+    		System.out.println("File length " + file.listFiles().length);
     		
+    		for (int i = 0; i < file.listFiles().length; i++) {
+    			if (file.listFiles()[i].isDirectory()) {
+    				System.out.println("file is dir");
+    				continue;
+    			}
+
+    			String f = file.listFiles()[i].getName();
+    			String[] split = file.listFiles()[i].getName().split("\\.");
+
+    			if (split.length > 1 && split[1].equals("jpg")) {
+    				fileNames.add(f);
+    			}
+    		}
     		
-    		imageChoose1.setImage(FileManager.setImage(dir + sep + file.listFiles()[0].getName()));
-    		fileNames[0] = file.listFiles()[0].getName();
-    		
-    		imageChoose2.setImage(FileManager.setImage(dir + sep + file.listFiles()[1].getName()));
-    		fileNames[1] = file.listFiles()[1].getName();
-    		
-    		imageChoose3.setImage(FileManager.setImage(dir + sep + file.listFiles()[2].getName()));
-    		fileNames[2] = file.listFiles()[2].getName();
-    		
-    		imageChoose4.setImage(FileManager.setImage(dir + sep + file.listFiles()[3].getName()));
-    		fileNames[3] = file.listFiles()[3].getName();
-    		
-    		imageChoose5.setImage(FileManager.setImage(dir + sep + file.listFiles()[4].getName()));
-    		fileNames[4] = file.listFiles()[4].getName();
-    		
-    		imageChoose6.setImage(FileManager.setImage(dir + sep + file.listFiles()[5].getName()));
-    		fileNames[5] = file.listFiles()[5].getName();
-    		
-    		imageChoose7.setImage(FileManager.setImage(dir + sep + file.listFiles()[6].getName()));
-    		fileNames[6] = file.listFiles()[6].getName();
-    		
-    		imageChoose8.setImage(FileManager.setImage(dir + sep + file.listFiles()[7].getName()));
-    		fileNames[7] = file.listFiles()[7].getName();
+    		if (fileNames.size() >= 8) {
+    		imageChoose1.setImage(FileManager.setImage(dir + sep + fileNames.get(0)));
+    		imageChoose2.setImage(FileManager.setImage(dir + sep + fileNames.get(1)));
+    		imageChoose3.setImage(FileManager.setImage(dir + sep + fileNames.get(2)));
+    		imageChoose4.setImage(FileManager.setImage(dir + sep + fileNames.get(3)));
+    		imageChoose5.setImage(FileManager.setImage(dir + sep + fileNames.get(4)));
+    		imageChoose6.setImage(FileManager.setImage(dir + sep + fileNames.get(5)));
+    		imageChoose7.setImage(FileManager.setImage(dir + sep + fileNames.get(6)));
+    		imageChoose8.setImage(FileManager.setImage(dir + sep + fileNames.get(7)));
+    		}
     	}
     }
         
