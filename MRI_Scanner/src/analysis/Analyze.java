@@ -12,30 +12,26 @@ public class Analyze {
 		
 	}
 	
-	public static String analyzeImage(String fileName) {
-		BufferedImage imageIn;
-		BufferedImage imageOut;
-		String newFileName = null;
-//		String sep = File.separator;
-//		String dir = currDir + sep + "Analyzed";
-//		File fileDir = new File(dir);
-//		fileDir.mkdir();
-		
+	public static String analyzeImage(String dir, String sep, String fileName) {
 		final int MIN_RGB = Integer.parseInt("000000", 16);
 		final int MAX_RGB = Integer.parseInt("444444", 16);
 		final int RED = Integer.parseInt("FF0000", 16);
 		
+		BufferedImage imageIn;
+		BufferedImage imageOut;
+		String newFileName = null;
+		
 		try {
 			imageIn = ImageIO.read(new File(fileName));
-			newFileName = fileName + "_analyzed.jpg";
-			File output = new File(newFileName);
 			imageOut = new BufferedImage(imageIn.getWidth(), imageIn.getHeight(),imageIn.getType());
 			
+			newFileName = dir + sep + "last-image" + ".analyzed.jpg";
+			File output = new File(newFileName);
+			
             System.out.printf("Analyzing image %s %n", fileName);
-//			System.out.printf("image height %s: image width %s %n", imageIn.getHeight(), imageIn.getWidth());
+
 			for (int i = 0; i < imageIn.getWidth(); i++) {
 				for (int j = 0; j < imageIn.getHeight(); j++) {
-//					System.out.printf("i %s :j %s%n", i, j);
 					if (Math.abs(imageIn.getRGB(i, j)) <= MAX_RGB &&
 							Math.abs(imageIn.getRGB(i, j)) > MIN_RGB) {
 						imageOut.setRGB(i, j, RED);
