@@ -9,17 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.activation.MimetypesFileTypeMap;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 
 /**
@@ -30,7 +26,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private MRIPrototype application;
     
     @FXML
-    private Label progName;
+    private Label labelAppName;
     
     @FXML
     private Button buttonBack;
@@ -40,25 +36,6 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private Button buttonSelectFolder;
     @FXML
     private Button buttonAnalyze;
-    
-    @FXML
-    private ImageView imageChoose1;
-    @FXML
-    private ImageView imageChoose2;
-    @FXML
-    private ImageView imageChoose3;
-    @FXML
-    private ImageView imageChoose4;
-    @FXML
-    private ImageView imageChoose5;
-    @FXML
-    private ImageView imageChoose6;
-    @FXML
-    private ImageView imageChoose7;
-    @FXML
-    private ImageView imageChoose8;
-    @FXML
-    private ImageView mainImage;
     
     @FXML
     private Button buttonImage1;
@@ -77,118 +54,154 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private Button buttonImage8;
     
+    @FXML
+    private ImageView imageChoose1;
+    @FXML
+    private ImageView imageChoose2;
+    @FXML
+    private ImageView imageChoose3;
+    @FXML
+    private ImageView imageChoose4;
+    @FXML
+    private ImageView imageChoose5;
+    @FXML
+    private ImageView imageChoose6;
+    @FXML
+    private ImageView imageChoose7;
+    @FXML
+    private ImageView imageChoose8;
+    @FXML
+    private ImageView imageMain;
+    
+    private final int MRI_IMAGE_AMOUNT = 8;
+    private String initialDir = "user.dir";
     private String dir = null;
     private String sep = File.separator;
+    private String currentMainImage = null;
     private List<String> fileNames = new  ArrayList<String>();
-    private String currMain = null;
-    private final int MRI_IMAGE_AMOUNT = 8;
     
-    // TODO Find more efficient use for these method calls
+    public void setSettings(ActionEvent event) {
+    	System.out.println("Settings not supported yet");
+    }
+    
     public void setImage1(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose1.getImage());
-    		currMain = fileNames.get(0);
+    		imageMain.setImage(imageChoose1.getImage());
+    		currentMainImage = fileNames.get(0);
     	}
     }
     
     public void setImage2(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose2.getImage());
-    		currMain = fileNames.get(1);
+    		imageMain.setImage(imageChoose2.getImage());
+    		currentMainImage = fileNames.get(1);
     	}
     }
     
     public void setImage3(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose3.getImage());
-    		currMain = fileNames.get(2);
+    		imageMain.setImage(imageChoose3.getImage());
+    		currentMainImage = fileNames.get(2);
     	}
     }
     
     public void setImage4(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose4.getImage());
-    		currMain = fileNames.get(3);
+    		imageMain.setImage(imageChoose4.getImage());
+    		currentMainImage = fileNames.get(3);
     	}
     }
     
     public void setImage5(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose5.getImage());
-    		currMain = fileNames.get(4);
+    		imageMain.setImage(imageChoose5.getImage());
+    		currentMainImage = fileNames.get(4);
     	}
     }
     
     public void setImage6(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose6.getImage());
-    		currMain = fileNames.get(5);
+    		imageMain.setImage(imageChoose6.getImage());
+    		currentMainImage = fileNames.get(5);
     	}
     }
     
     public void setImage7(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose7.getImage());
-    		currMain = fileNames.get(6);
+    		imageMain.setImage(imageChoose7.getImage());
+    		currentMainImage = fileNames.get(6);
     	}
     }
     
     public void setImage8(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		mainImage.setImage(imageChoose8.getImage());
-    		currMain = fileNames.get(7);
+    		imageMain.setImage(imageChoose8.getImage());
+    		currentMainImage = fileNames.get(7);
     	}
     }
     
     // TODO move to file manager
     public void getImageDirectory(ActionEvent event) {
-    	String initialDir = "user.dir";
-    	
     	DirectoryChooser directoryChooser = new DirectoryChooser();
     	directoryChooser.setInitialDirectory(new File(System.getProperty(initialDir)));
-    	directoryChooser.setTitle("Select MRI image directory");
+    	directoryChooser.setTitle("Select MRI image directory for month");
     	
     	File file = directoryChooser.showDialog(null);
     	
     	if (file != null) {
     		dir = file.getPath();
     		System.out.println("Loading images in: " + dir);
-    		System.out.println("File length " + file.listFiles().length);
+    		System.out.println(file.listFiles().length + " files in directory");
+    		
+    		fileNames.clear(); // clear previous images
+    		currentMainImage = null;
     		
     		for (int i = 0; i < file.listFiles().length; i++) {
     			if (file.listFiles()[i].isDirectory()) {
-    				System.out.println("file is dir");
+    				System.out.println("File is a directory");
     				continue;
     			}
-
     			String f = file.listFiles()[i].getName();
-    			String[] split = file.listFiles()[i].getName().split("\\.");
-
-    			if (split.length > 1 && split[1].equals("jpg")) {
+    			String[] split = f.split("\\.");
+    			
+    			if (split.length > 1 && split[1].equals("jpg")) { // only add jpgs and ignore already analyzed
     				fileNames.add(f);
     			}
     		}
     		
     		if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageChoose1.setImage(FileManager.setImage(dir + sep + fileNames.get(0)));
-    		imageChoose2.setImage(FileManager.setImage(dir + sep + fileNames.get(1)));
-    		imageChoose3.setImage(FileManager.setImage(dir + sep + fileNames.get(2)));
-    		imageChoose4.setImage(FileManager.setImage(dir + sep + fileNames.get(3)));
-    		imageChoose5.setImage(FileManager.setImage(dir + sep + fileNames.get(4)));
-    		imageChoose6.setImage(FileManager.setImage(dir + sep + fileNames.get(5)));
-    		imageChoose7.setImage(FileManager.setImage(dir + sep + fileNames.get(6)));
-    		imageChoose8.setImage(FileManager.setImage(dir + sep + fileNames.get(7)));
+	    		imageChoose1.setImage(FileManager.setImage(dir + sep + fileNames.get(0)));
+	    		imageChoose2.setImage(FileManager.setImage(dir + sep + fileNames.get(1)));
+	    		imageChoose3.setImage(FileManager.setImage(dir + sep + fileNames.get(2)));
+	    		imageChoose4.setImage(FileManager.setImage(dir + sep + fileNames.get(3)));
+	    		imageChoose5.setImage(FileManager.setImage(dir + sep + fileNames.get(4)));
+	    		imageChoose6.setImage(FileManager.setImage(dir + sep + fileNames.get(5)));
+	    		imageChoose7.setImage(FileManager.setImage(dir + sep + fileNames.get(6)));
+	    		imageChoose8.setImage(FileManager.setImage(dir + sep + fileNames.get(7)));
+    		}
+    		else {
+    			System.out.println("Directory doesn't contain enough images");
+    			dir = null;
+    			imageChoose1.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			imageChoose2.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			imageChoose3.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			imageChoose4.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			imageChoose5.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			imageChoose6.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			imageChoose7.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			imageChoose8.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			
+    			imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
     		}
     	}
     }
-        
-    // TODO save in Analyze subfolder
+    
     public void analyzeImage(ActionEvent event) {
-    	if (dir != null) {
-    		mainImage.setImage(FileManager.setImage(Analyze.analyzeImage(dir + sep + currMain)));
+    	if (dir != null && currentMainImage != null) {
+    		imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
     	}
     	else {
-    		System.out.println("No directory selected!");
+    		System.out.println("No valid directory or image selected");
     	}
     }
     
