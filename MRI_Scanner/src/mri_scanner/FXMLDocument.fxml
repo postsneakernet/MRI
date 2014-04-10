@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="690.0" prefWidth="1079.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="mri_scanner.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="690.0" prefWidth="1079.0" style="-fx-background-color: #1D7373;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mri_scanner.FXMLDocumentController">
   <children>
-    <AnchorPane prefHeight="164.0" prefWidth="1083.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane prefHeight="82.0" prefWidth="1119.0" style="-fx-background-color: #009999;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-        <VBox layoutY="18.0" AnchorPane.rightAnchor="33.0">
+        <VBox layoutY="18.0" spacing="2.0" AnchorPane.rightAnchor="33.0">
           <children>
             <Button fx:id="buttonSettings" mnemonicParsing="false" onAction="#setSettings" prefHeight="25.0" prefWidth="97.0" text="Settings" />
             <Button fx:id="buttonSelectFolder" defaultButton="false" mnemonicParsing="false" onAction="#getImageDirectory" prefHeight="25.0" prefWidth="98.0" text="Select Folder" />
           </children>
+<padding>
+<Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+</padding>
         </VBox>
         <Button fx:id="buttonBack" focusTraversable="false" layoutY="27.0" mnemonicParsing="false" text="Back" AnchorPane.leftAnchor="22.1875" />
         <HBox alignment="CENTER" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="423.0" AnchorPane.topAnchor="30.0">
@@ -22,9 +25,19 @@
             <Label id="progName" fx:id="labelAppName" prefHeight="17.0" prefWidth="77.0" text="MRI Analysis " />
           </children>
         </HBox>
-        <VBox layoutY="112.0" prefHeight="101.0" prefWidth="1079.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="4.0">
-          <children>
-            <GridPane prefHeight="89.0" prefWidth="1075.0">
+      </children>
+    </AnchorPane>
+<HBox layoutX="89.0" layoutY="217.0" spacing="50.0">
+<children>
+                <AnchorPane layoutX="89.0" layoutY="217.0" prefHeight="437.0" prefWidth="375.0" style="-fx-background-color: #5CCCCC;">
+                  <children>
+                    <Button fx:id="buttonAnalyze" layoutX="158.0" layoutY="384.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" />
+                    <ImageView id="mainImage" fx:id="imageMain" fitHeight="347.0" fitWidth="348.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+                </AnchorPane><AnchorPane layoutX="514.0" layoutY="217.0" prefHeight="437.0" prefWidth="484.0" style="-fx-background-color: #5CCCCC;" />
+</children>
+</HBox>
+            <GridPane layoutY="82.0" prefHeight="89.0" prefWidth="1079.0" style="-fx-background-color: #33CCCC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
               <children>
                 <StackPane prefHeight="75.0" prefWidth="133.0">
                   <children>
@@ -89,62 +102,5 @@
                 <RowConstraints minHeight="10.0" prefHeight="180.0" vgrow="NEVER" />
               </rowConstraints>
             </GridPane>
-          </children>
-        </VBox>
-      </children>
-    </AnchorPane>
-    <HBox alignment="CENTER" prefHeight="462.0" prefWidth="1036.0" spacing="20.0" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="205.0">
-      <children>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="462.0" prefWidth="455.0">
-          <children>
-            <VBox layoutX="13.0" layoutY="17.0" prefHeight="440.0" prefWidth="392.0">
-              <children>
-                <AnchorPane prefHeight="437.0" prefWidth="375.0">
-                  <children>
-                    <Button fx:id="buttonAnalyze" layoutX="158.0" layoutY="384.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" />
-                    <ImageView id="mainImage" fx:id="imageMain" fitHeight="347.0" fitWidth="348.0" layoutX="22.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
-                  </children>
-                </AnchorPane>
-              </children>
-            </VBox>
-          </children>
-        </AnchorPane>
-        <AnchorPane prefHeight="462.0" prefWidth="498.0">
-          <children>
-            <VBox layoutX="39.0" layoutY="106.0" prefHeight="356.0" prefWidth="429.0">
-              <children>
-                <GridPane prefHeight="116.0" prefWidth="564.0">
-                  <children>
-                    <Label text="Label" />
-                    <Label text="Label" GridPane.columnIndex="1" />
-                    <Label text="Label" GridPane.rowIndex="1" />
-                    <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Label text="Label" GridPane.rowIndex="2" />
-                    <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  </children>
-                  <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
-                </GridPane>
-                <ScatterChart alternativeColumnFillVisible="false" alternativeRowFillVisible="false" animated="true" horizontalGridLinesVisible="true" horizontalZeroLineVisible="true" legendVisible="false" prefHeight="248.0" prefWidth="498.0" verticalGridLinesVisible="true" verticalZeroLineVisible="true">
-                  <xAxis>
-                    <CategoryAxis prefHeight="23.0" prefWidth="425.0" side="BOTTOM" />
-                  </xAxis>
-                  <yAxis>
-                    <NumberAxis side="LEFT" />
-                  </yAxis>
-                </ScatterChart>
-              </children>
-            </VBox>
-          </children>
-        </AnchorPane>
-      </children>
-    </HBox>
   </children>
 </AnchorPane>
