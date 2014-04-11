@@ -98,6 +98,16 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	labelFeedback.setText("Settings not supported yet");
     }
     
+    public void getPrev(ActionEvent event) {
+    	System.out.println("Previous month not supported yet");
+    	labelFeedback.setText("Previous month not supported yet");
+    }
+    
+    public void getNext(ActionEvent event) {
+    	System.out.println("Next Month not supported yet");
+    	labelFeedback.setText("Next Month not supported yet");
+    }
+    
     public void setImage1(ActionEvent event) {
     	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose1.getImage());
