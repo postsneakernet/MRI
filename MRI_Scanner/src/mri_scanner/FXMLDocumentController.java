@@ -27,15 +27,23 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     
     @FXML
     private Label labelAppName;
+    @FXML
+    private Label labelMonthNum;
+    @FXML
+    private Label labelFeedback;
     
     @FXML
-    private Button buttonBack;
+    private Button buttonHelp;
     @FXML
     private Button buttonSettings;
     @FXML
     private Button buttonSelectFolder;
     @FXML
     private Button buttonAnalyze;
+    @FXML
+    private Button buttonPrev;
+    @FXML
+    private Button buttonNext;
     
     @FXML
     private Button buttonImage1;
@@ -80,8 +88,14 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private String currentMainImage = null;
     private List<String> fileNames = new  ArrayList<String>();
     
+    public void getHelp(ActionEvent event) {
+    	System.out.println("Help not supported yet");
+    	labelFeedback.setText("Help not supported yet");
+    }
+    
     public void setSettings(ActionEvent event) {
     	System.out.println("Settings not supported yet");
+    	labelFeedback.setText("Settings not supported yet");
     }
     
     public void setImage1(ActionEvent event) {
@@ -152,6 +166,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		dir = file.getPath();
     		System.out.println("Loading images in: " + dir);
     		System.out.println(file.listFiles().length + " files in directory");
+    		labelFeedback.setText("Loading images in: " + dir);
     		
     		fileNames.clear(); // clear previous images
     		currentMainImage = null;
@@ -181,6 +196,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		}
     		else {
     			System.out.println("Directory doesn't contain enough images");
+    			labelFeedback.setText("Directory doesn't contain enough images");
     			dir = null;
     			imageChoose1.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
     			imageChoose2.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
@@ -202,6 +218,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	}
     	else {
     		System.out.println("No valid directory or image selected");
+    		labelFeedback.setText("No valid directory or image selected");
     	}
     }
     
