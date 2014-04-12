@@ -107,17 +107,17 @@
         <Insets top="6.0" />
       </padding>
     </HBox>
-    <HBox alignment="CENTER" layoutY="217.0" spacing="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+    <HBox alignment="CENTER" layoutX="51.0" layoutY="213.0" prefHeight="454.0" prefWidth="978.0" spacing="50.0" AnchorPane.leftAnchor="51.0" AnchorPane.rightAnchor="50.0">
       <children>
-        <AnchorPane prefHeight="437.0" prefWidth="375.0" style="-fx-background-color: #5CCCCC;">
+        <AnchorPane prefHeight="460.0" prefWidth="380.0" style="-fx-background-color: #5CCCCC;">
           <children>
-            <Button fx:id="buttonAnalyze" layoutX="158.0" layoutY="384.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" />
-            <ImageView id="mainImage" fx:id="imageMain" fitHeight="347.0" fitWidth="348.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="buttonAnalyze" layoutX="140.0" layoutY="380.0" mnemonicParsing="false" onAction="#analyzeImage" text="Analyze" />
+            <ImageView id="mainImage" fx:id="imageMain" fitHeight="333.0" fitWidth="317.0" layoutX="10.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
           </children>
         </AnchorPane>
-        <AnchorPane prefHeight="437.0" prefWidth="484.0" style="-fx-background-color: #5CCCCC;">
+        <AnchorPane prefHeight="437.0" prefWidth="635.0" style="-fx-background-color: #5CCCCC;">
 <children>
-<VBox layoutX="174.0" layoutY="369.0">
+<VBox layoutX="227.0" layoutY="374.0">
 <children>
 <HBox layoutX="196.0048828125" layoutY="369.0" spacing="32.0">
 <children><Label layoutX="196.0048828125" layoutY="369.0" text="P Value" /><Label layoutX="262.0048828125" layoutY="369.0" text="C(mg)" />
@@ -129,7 +129,7 @@
 </HBox>
 </children>
 </VBox>
-<ImageView fx:id="setGraphImage" fitHeight="300.0" fitWidth="438.0" layoutX="23.0" layoutY="53.0">
+<ImageView fx:id="setGraphImage" fitHeight="333.0" fitWidth="555.0" layoutX="15.0" layoutY="14.0">
 <image>
 <Image url="@../../placeholder.png" />
 </image>
