@@ -89,7 +89,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private List<String> fileNames = new  ArrayList<String>();
     private int selectedMonth = 0;
     private int monthTotal = 0;
-    File patientMonths;
+    private File patientMonths;
+    private boolean isValidDir = false;
     
     public void getHelp(ActionEvent event) {
     	System.out.println("Help not supported yet");
@@ -214,10 +215,24 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	
     	patientMonths = directoryChooser.showDialog(null);
     	System.out.println(patientMonths.listFiles().length + " patient months");
-    	monthTotal = patientMonths.listFiles().length;
-
-    	setSelectedMonth();
-    	setImageGrid(getPatientMonth());
+    	
+    	// validate
+    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
+			if (!patientMonths.listFiles()[i].isDirectory()) {
+				System.out.println("File is not a directory");
+				isValidDir = false;
+				break;
+			}
+			isValidDir = true;
+		}
+    	
+    	if (isValidDir) {
+    		monthTotal = patientMonths.listFiles().length;
+        	setSelectedMonth();
+        	setImageGrid(getPatientMonth());
+    	} else {
+    		monthTotal = 0;
+    	}
     }
     
     /*
