@@ -260,7 +260,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		imageChoose8.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
 		
 		imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "blankgraph.jpg"));
     }
     
     public File getPatientMonth() {

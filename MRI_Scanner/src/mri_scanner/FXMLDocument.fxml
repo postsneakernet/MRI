@@ -131,7 +131,7 @@
 </VBox>
 <ImageView fx:id="imageGraph" fitHeight="372.0" fitWidth="564.0" layoutX="15.0" layoutY="14.0">
 <image>
-<Image url="@../../placeholder.png" />
+<Image url="@../../blankgraph.jpg" />
 </image>
 </ImageView>
 </children></AnchorPane>
