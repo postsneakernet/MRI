@@ -28,7 +28,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private Label labelAppName;
     @FXML
-    private Label labelMonthNum;
+    private Label labelSelectedMonth;
     @FXML
     private Label labelFeedback;
     
@@ -87,6 +87,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private String sep = File.separator;
     private String currentMainImage = null;
     private List<String> fileNames = new  ArrayList<String>();
+    private int selectedMonth = 0;
+    private int monthTotal = 0;
+    File patientMonths;
     
     public void getHelp(ActionEvent event) {
     	System.out.println("Help not supported yet");
@@ -99,13 +102,53 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     public void getPrev(ActionEvent event) {
-    	System.out.println("Previous month not supported yet");
-    	labelFeedback.setText("Previous month not supported yet");
+    	System.out.println("Select valid directory");
+    	labelFeedback.setText("Select valid directory");
+    	
+    	if (monthTotal > 0) {
+	    	setSelectedMonth(false);
+	    	setImageGrid(getPatientMonth());
+	    	imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    	}
     }
     
     public void getNext(ActionEvent event) {
-    	System.out.println("Next Month not supported yet");
-    	labelFeedback.setText("Next Month not supported yet");
+    	System.out.println("Select valid directory");
+    	labelFeedback.setText("Select valid directory");
+    	
+    	if (monthTotal > 0) {
+	    	setSelectedMonth(true);
+	    	setImageGrid(getPatientMonth());
+	    	imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    	}
+    }
+    
+    /*
+     * Initial directory load
+     */
+    public void setSelectedMonth() {
+    	int i = selectedMonth + 1; // label setText doesn't like math operations
+    	labelSelectedMonth.setText("Month " + i);
+    }
+    
+    /*
+     * Selecting previous and next months in directory
+     */
+    public void setSelectedMonth(boolean increment) {
+    	if (increment) {
+    		selectedMonth++;
+	    	if (selectedMonth > monthTotal - 1) {
+	    		selectedMonth = monthTotal - 1;
+	    	}
+    	} else {
+    		selectedMonth--;
+	    	if (selectedMonth < 0) {
+	    		selectedMonth = 0;
+	    	}
+    	}
+    	
+    	int i = selectedMonth + 1; // label setText doesn't like math operations
+    	labelSelectedMonth.setText("Month " + i);
     }
     
     public void setImage1(ActionEvent event) {
@@ -164,14 +207,28 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	}
     }
     
-    // TODO move to file manager
     public void getImageDirectory(ActionEvent event) {
     	DirectoryChooser directoryChooser = new DirectoryChooser();
     	directoryChooser.setInitialDirectory(new File(System.getProperty(initialDir)));
-    	directoryChooser.setTitle("Select MRI image directory for month");
+    	directoryChooser.setTitle("Select MRI patient directory");
     	
-    	File file = directoryChooser.showDialog(null);
-    	
+    	patientMonths = directoryChooser.showDialog(null);
+    	System.out.println(patientMonths.listFiles().length + " patient months");
+    	monthTotal = patientMonths.listFiles().length;
+
+    	setSelectedMonth();
+    	setImageGrid(getPatientMonth());
+    }
+    
+    /*
+     * Returns directory for a month of MRI images
+     */
+    public File getPatientMonth() {
+    	File file = patientMonths.listFiles()[selectedMonth];
+    	return file;
+    }
+    
+    public void setImageGrid(File file) {
     	if (file != null) {
     		dir = file.getPath();
     		System.out.println("Loading images in: " + dir);
