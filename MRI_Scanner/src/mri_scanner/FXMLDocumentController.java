@@ -2,8 +2,10 @@ package mri_scanner;
 
 
 import analysis.Analyze;
+import analysis.Graphing;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -81,6 +84,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private ImageView imageMain;
     
+    @FXML
+    ImageView setGraphImage;
+    
+    
+    
+    
     private final int MRI_IMAGE_AMOUNT = 8;
     private String initialDir = "user.dir";
     private String dir = null;
@@ -93,8 +102,15 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private boolean isValidDir = false;
     
     public void getHelp(ActionEvent event) {
-    	System.out.println("Help not supported yet");
-    	labelFeedback.setText("Help not supported yet");
+    
+		try {
+			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + System.getProperty(initialDir) + sep + "user.json");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
     }
     
     public void setSettings(ActionEvent event) {
@@ -294,8 +310,16 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	}
     }
     
+    
+   
+   
+    
+    
+    
     public void analyzeImage(ActionEvent event) {
     	if (dir != null && currentMainImage != null) {
+    		Image dfsdfs = Graphing.createGraph();
+    		setGraphImage.setImage(dfsdfs);
     		imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
     	}
     	else {

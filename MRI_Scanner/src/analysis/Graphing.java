@@ -16,7 +16,7 @@ import javafx.scene.image.Image;
 
 public class Graphing {
 
-	Image createGraph(ArrayList<double[]> myData) {
+	public static Image createGraph(/*ArrayList<double[]> myData*/) {
 		BufferedImage img = null;
 
 		ArrayList<double[]> abc = new ArrayList<double[]>();
@@ -29,30 +29,30 @@ public class Graphing {
 
 		}
 
-//		double[] datVolume = new double[abc.size()];
-//		double[] myMonths = new double[abc.size()];
-//
-//		for (int i = 0; i < abc.size(); i++) {
-//
-//			myMonths[i] = abc.get(i)[0];
-//
-//			datVolume[i] = abc.get(i)[1];
-//
-//		}
-		
-		double[] datVolume = new double[myData.size()];
-		double[] myMonths = new double[myData.size()];
+		double[] datVolume = new double[abc.size()];
+		double[] myMonths = new double[abc.size()];
 
-		for (int i = 0; i < myData.size(); i++) {
+		for (int i = 0; i < abc.size(); i++) {
 
-			myMonths[i] = myData.get(i)[0];
+			myMonths[i] = abc.get(i)[0];
 
-			datVolume[i] = myData.get(i)[1];
+			datVolume[i] = abc.get(i)[1];
 
 		}
+		
+//		double[] datVolume = new double[myData.size()];
+//		double[] myMonths = new double[myData.size()];
+//
+//		for (int i = 0; i < myData.size(); i++) {
+//
+//			myMonths[i] = myData.get(i)[0];
+//
+//			datVolume[i] = myData.get(i)[1];
+//
+//		}
 
 		
-		Chart chart = new Chart(555, 333);
+		Chart chart = new Chart(564, 372);
 		chart.addSeries("Volume", myMonths, datVolume);
 		chart.setChartTitle("Tumor Mapping");
 		chart.setXAxisTitle("Months");
