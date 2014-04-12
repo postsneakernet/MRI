@@ -113,7 +113,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	if (monthTotal > 0) {
 	    	setSelectedMonth(false);
 	    	setImageGrid(getPatientMonth());
-	    	imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+	    	imageMain.setImage(null);
     	}
     }
     
@@ -124,7 +124,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	if (monthTotal > 0) {
 	    	setSelectedMonth(true);
 	    	setImageGrid(getPatientMonth());
-	    	imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+	    	imageMain.setImage(null);
     	}
     }
     
@@ -251,16 +251,16 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		labelFeedback.setText("Directory doesn't contain enough images");
 		dir = null;
 		monthTotal = 0;
-		imageChoose1.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageChoose2.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageChoose3.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageChoose4.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageChoose5.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageChoose6.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageChoose7.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-		imageChoose8.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose1.setImage(null);
+		imageChoose2.setImage(null);
+		imageChoose3.setImage(null);
+		imageChoose4.setImage(null);
+		imageChoose5.setImage(null);
+		imageChoose6.setImage(null);
+		imageChoose7.setImage(null);
+		imageChoose8.setImage(null);
 		
-		imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageMain.setImage(null);
 		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "blankgraph.jpg"));
     }
     
