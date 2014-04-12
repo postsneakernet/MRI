@@ -96,7 +96,7 @@
     <HBox layoutX="13.0" layoutY="171.0" prefHeight="35.0" prefWidth="142.0">
       <children>
         <Button fx:id="buttonPrev" mnemonicParsing="false" onAction="#getPrev" text="&lt;" />
-        <Label fx:id="labelMonthNum" text="Month #" textFill="WHITE">
+        <Label fx:id="labelSelectedMonth" text="Month #" textFill="WHITE">
           <HBox.margin>
             <Insets left="5.0" right="5.0" top="5.0" />
           </HBox.margin>
