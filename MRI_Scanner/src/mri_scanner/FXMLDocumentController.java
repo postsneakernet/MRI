@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,6 +29,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private Label labelSelectedMonth;
     @FXML
+    private Label labelSlice;
+    @FXML
+    private Label labelSliceArea;
+    @FXML
+    private Label labelMonthVolume;
+    @FXML
     private Label labelFeedback;
     
     @FXML
@@ -37,12 +44,11 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private Button buttonSelectFolder;
     @FXML
-    private Button buttonAnalyze;
-    @FXML
     private Button buttonPrev;
     @FXML
     private Button buttonNext;
-    
+    @FXML
+    private Button buttonAnalyze;
     @FXML
     private Button buttonImage1;
     @FXML
@@ -61,6 +67,10 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private Button buttonImage8;
     
     @FXML
+    private ImageView imageMain;
+    @FXML
+    private ImageView imageGraph;
+    @FXML
     private ImageView imageChoose1;
     @FXML
     private ImageView imageChoose2;
@@ -76,10 +86,6 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private ImageView imageChoose7;
     @FXML
     private ImageView imageChoose8;
-    @FXML
-    private ImageView imageMain;
-    @FXML
-    private ImageView imageGraph;
     
     private final int MRI_IMAGE_AMOUNT = 8;
     private String initialDir = "user.dir";
@@ -87,10 +93,11 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private String sep = File.separator;
     private String currentMainImage = null;
     private List<String> fileNames = new  ArrayList<String>();
+    private List<Integer[]> tumorArea = new ArrayList<Integer[]>();
+    private List<Double> tumorVolume = new ArrayList<Double>();
+    private File patientMonths;
     private int selectedMonth = 0;
     private int monthTotal = 0;
-    private File patientMonths;
-    private boolean isValidDir = false;
     
     public void getHelp(ActionEvent event) {
 		try {
@@ -101,30 +108,201 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		}
     }
     
-    public void setSettings(ActionEvent event) {
+    public void getSettings(ActionEvent event) {
     	System.out.println("Settings not supported yet");
     	labelFeedback.setText("Settings not supported yet");
     }
     
-    public void getPrev(ActionEvent event) {
-    	System.out.println("Select valid directory");
-    	labelFeedback.setText("Select valid directory");
+    public void getPatientDir(ActionEvent event) {
+    	DirectoryChooser directoryChooser = new DirectoryChooser();
+    	directoryChooser.setInitialDirectory(new File(System.getProperty(initialDir)));
+    	directoryChooser.setTitle("Select MRI patient directory");
+    	patientMonths = directoryChooser.showDialog(null);
     	
-    	if (monthTotal > 0) {
-	    	setSelectedMonth(false);
-	    	setImageGrid(getPatientMonth());
-	    	imageMain.setImage(null);
+    	if (patientMonths != null && validateDir()) {
+    		monthTotal = patientMonths.listFiles().length;
+        	setSelectedMonth();
+        	setImageGrid(getPatientMonth());
+        	getTumorArea();
+        	getTumorVolume();
+        	labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	} else {
+    		setNullData();
     	}
     }
     
-    public void getNext(ActionEvent event) {
-    	System.out.println("Select valid directory");
-    	labelFeedback.setText("Select valid directory");
-    	
-    	if (monthTotal > 0) {
+    public void getPrevMonth(ActionEvent event) {    	
+    	if (monthTotal > 0 && selectedMonth != 0) {
+	    	setSelectedMonth(false);
+	    	setImageGrid(getPatientMonth());
+	    	imageMain.setImage(null);
+	    	labelSlice.setText("Slice: ");
+	    	labelSliceArea.setText("Area: ");
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void getNextMonth(ActionEvent event) {    	
+    	if (monthTotal > 0 && selectedMonth != monthTotal - 1) {
 	    	setSelectedMonth(true);
 	    	setImageGrid(getPatientMonth());
 	    	imageMain.setImage(null);
+	    	labelSlice.setText("Slice: ");
+	    	labelSliceArea.setText("Area: ");
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage1(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose1.getImage());
+    		currentMainImage = fileNames.get(0);
+    		labelSlice.setText("Slice: " + 1);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[0]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage2(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose2.getImage());
+    		currentMainImage = fileNames.get(1);
+    		labelSlice.setText("Slice: " + 2);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[1]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage3(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose3.getImage());
+    		currentMainImage = fileNames.get(2);
+    		labelSlice.setText("Slice: " + 3);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[2]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage4(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose4.getImage());
+    		currentMainImage = fileNames.get(3);
+    		labelSlice.setText("Slice: " + 4);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[3]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage5(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose5.getImage());
+    		currentMainImage = fileNames.get(4);
+    		labelSlice.setText("Slice: " + 5);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[4]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage6(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose6.getImage());
+    		currentMainImage = fileNames.get(5);
+    		labelSlice.setText("Slice: " + 6);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[5]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage7(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose7.getImage());
+    		currentMainImage = fileNames.get(6);
+    		labelSlice.setText("Slice: " + 7);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[6]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    public void setImage8(ActionEvent event) {
+    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    		imageMain.setImage(imageChoose8.getImage());
+    		currentMainImage = fileNames.get(7);
+    		labelSlice.setText("Slice: " + 8);
+    		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[7]);
+    		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    	}
+    }
+    
+    // TODO toggle show analyzed image
+    public void analyzeImage(ActionEvent event) {
+    	if (dir != null && currentMainImage != null) {
+    		imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
+    	} else {
+    		labelFeedback.setText("No image selected");
+    	}
+    }
+    
+    /*
+     * Checks that selected directory has appropriate data
+     */
+    public boolean validateDir() {
+    	int jpgCount = 0;
+    	
+    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
+    		File month = patientMonths.listFiles()[i];
+    		
+			if (month.isDirectory()) {
+				for (int j = 0; j < month.listFiles().length; j++) {
+					String f = month.listFiles()[j].getName();
+	    			String[] split = f.split("\\.");
+	    			
+	    			if (split.length > 1 && split[1].equals("jpg")) {
+	    				jpgCount++;
+	    			}
+				}
+			}
+		}
+    	
+    	return jpgCount > 0 && jpgCount % MRI_IMAGE_AMOUNT == 0;
+    }
+    
+    public void getTumorArea() {
+    	tumorArea.clear();
+
+    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
+    		File month = patientMonths.listFiles()[i];
+    		Integer[] monthArea = new Integer[MRI_IMAGE_AMOUNT];
+    		int k = 0; // true index in case month contains non-jpg files
+    		
+			if (month.isDirectory()) {
+				for (int j = 0; j < month.listFiles().length; j++) {					
+					String f = month.listFiles()[j].getName();
+	    			String[] split = f.split("\\.");
+	    			
+	    			// only add jpgs and ignore already analyzed
+	    			if (split.length > 1 && split[1].equals("jpg") && k < monthArea.length) {
+	    				monthArea[k] = Analyze.analyzeImage(month.getPath() + sep + f);
+	    				k++;
+	    			}
+				}
+				
+				tumorArea.add(monthArea);
+			}
+		}
+    	
+    	imageGraph.setImage(Graphing.createGraph());
+    }
+    
+    public void getTumorVolume() {
+    	tumorVolume.clear();
+    	
+    	for (Integer[] iArray: tumorArea) {
+    		double monthVolume = 0;
+    		for (int i = 0; i < iArray.length; i++) {
+    			monthVolume = monthVolume + iArray[i];
+    		}
+
+    		tumorVolume.add(monthVolume);
     	}
     }
     
@@ -137,7 +315,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     /*
-     * Selecting previous and next months in directory
+     * Previous or next month is selected
      */
     public void setSelectedMonth(boolean increment) {
     	if (increment) {
@@ -156,123 +334,13 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	labelSelectedMonth.setText("Month " + i);
     }
     
-    public void setImage1(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose1.getImage());
-    		currentMainImage = fileNames.get(0);
-    	}
-    }
-    
-    public void setImage2(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose2.getImage());
-    		currentMainImage = fileNames.get(1);
-    	}
-    }
-    
-    public void setImage3(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose3.getImage());
-    		currentMainImage = fileNames.get(2);
-    	}
-    }
-    
-    public void setImage4(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose4.getImage());
-    		currentMainImage = fileNames.get(3);
-    	}
-    }
-    
-    public void setImage5(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose5.getImage());
-    		currentMainImage = fileNames.get(4);
-    	}
-    }
-    
-    public void setImage6(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose6.getImage());
-    		currentMainImage = fileNames.get(5);
-    	}
-    }
-    
-    public void setImage7(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose7.getImage());
-    		currentMainImage = fileNames.get(6);
-    	}
-    }
-    
-    public void setImage8(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-    		imageMain.setImage(imageChoose8.getImage());
-    		currentMainImage = fileNames.get(7);
-    	}
-    }
-    
-    public void getImageDirectory(ActionEvent event) {
-    	DirectoryChooser directoryChooser = new DirectoryChooser();
-    	directoryChooser.setInitialDirectory(new File(System.getProperty(initialDir)));
-    	directoryChooser.setTitle("Select MRI patient directory");
-    	
-    	patientMonths = directoryChooser.showDialog(null);
-    	
-    	// validate
-    	if (patientMonths == null) {
-    		setNullData();
-    		return;
-    	}
-    	
-    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
-			if (!patientMonths.listFiles()[i].isDirectory()) {
-				System.out.println("File is not a directory");
-				isValidDir = false;
-				break;
-			}
-			isValidDir = true;
-		}
-    	
-    	if (isValidDir) {
-    		monthTotal = patientMonths.listFiles().length;
-        	setSelectedMonth();
-        	setImageGrid(getPatientMonth());
-    	} else {
-    		setNullData();
-    	}
-    }
-    
-    /*
-     * If invalid directory is selected, clear previous values
-     */
-    public void setNullData() {
-    	System.out.println("Directory doesn't contain enough images");
-		labelFeedback.setText("Directory doesn't contain enough images");
-		dir = null;
-		monthTotal = 0;
-		imageChoose1.setImage(null);
-		imageChoose2.setImage(null);
-		imageChoose3.setImage(null);
-		imageChoose4.setImage(null);
-		imageChoose5.setImage(null);
-		imageChoose6.setImage(null);
-		imageChoose7.setImage(null);
-		imageChoose8.setImage(null);
-		
-		imageMain.setImage(null);
-		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "blankgraph.jpg"));
-    }
-    
     public File getPatientMonth() {
     	return patientMonths.listFiles()[selectedMonth];
     }
-    
+        
     public void setImageGrid(File file) {
     	if (file != null) {
     		dir = file.getPath();
-    		System.out.println("Loading images in: " + dir);
-    		System.out.println(file.listFiles().length + " files in directory");
     		labelFeedback.setText("Loading images in: " + dir);
     		
     		fileNames.clear(); // clear previous images
@@ -280,13 +348,14 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		
     		for (int i = 0; i < file.listFiles().length; i++) {
     			if (file.listFiles()[i].isDirectory()) {
-    				System.out.println("File is a directory");
     				continue;
     			}
+    			
     			String f = file.listFiles()[i].getName();
     			String[] split = f.split("\\.");
     			
-    			if (split.length > 1 && split[1].equals("jpg")) { // only add jpgs and ignore already analyzed
+    			// only add jpgs and ignore already analyzed
+    			if (split.length > 1 && split[1].equals("jpg")) {
     				fileNames.add(f);
     			}
     		}
@@ -307,16 +376,29 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	}
     }
     
-    public void analyzeImage(ActionEvent event) {
-    	if (dir != null && currentMainImage != null) {
-    		Image dfsdfs = Graphing.createGraph();
-    		imageGraph.setImage(dfsdfs);
-    		imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
-    	}
-    	else {
-    		System.out.println("No valid directory or image selected");
-    		labelFeedback.setText("No valid directory or image selected");
-    	}
+    /*
+     * Clear previous images if invalid directory is selected
+     */
+    public void setNullData() {
+		labelFeedback.setText("Directory doesn't contain enough images");
+		labelSlice.setText("Slice: ");
+		labelSliceArea.setText("Area: ");
+		labelMonthVolume.setText("Vol: ");
+		dir = null;
+		monthTotal = 0;
+		selectedMonth = 0;
+		setSelectedMonth();
+		imageChoose1.setImage(null);
+		imageChoose2.setImage(null);
+		imageChoose3.setImage(null);
+		imageChoose4.setImage(null);
+		imageChoose5.setImage(null);
+		imageChoose6.setImage(null);
+		imageChoose7.setImage(null);
+		imageChoose8.setImage(null);
+		
+		imageMain.setImage(null);
+		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "blankgraph.jpg"));
     }
     
     @Override

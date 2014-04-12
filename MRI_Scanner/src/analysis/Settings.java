@@ -11,10 +11,6 @@ import java.util.Properties;
 public class Settings {
 	static Properties defaultProps = new Properties();
 	static Properties appProps = new Properties(defaultProps);
-
-	public Settings() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	public static void getDefaultProperties() {
 		try (FileInputStream in = new FileInputStream("defaultProperties")) {

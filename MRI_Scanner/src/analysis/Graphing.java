@@ -1,5 +1,8 @@
 package analysis;
 
+import com.xeiam.xchart.BitmapEncoder;
+import com.xeiam.xchart.Chart;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -7,9 +10,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-
-import com.xeiam.xchart.BitmapEncoder;
-import com.xeiam.xchart.Chart;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

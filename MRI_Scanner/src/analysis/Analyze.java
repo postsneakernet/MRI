@@ -7,16 +7,39 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Analyze {
+	final static int MIN_RGB = Integer.parseInt("000000", 16);
+	final static int MAX_RGB = Integer.parseInt("444444", 16);
+	final static int RED = Integer.parseInt("FF0000", 16);
 	
-	public Analyze() {
+	/*
+	 * Returns amount of pixels in tumor
+	 */
+	public static Integer analyzeImage(String fileName) {
+		Integer tumorPixel = 0;
+		BufferedImage imageIn;
 		
+		try {
+			imageIn = ImageIO.read(new File(fileName));
+
+			for (int i = 0; i < imageIn.getWidth(); i++) {
+				for (int j = 0; j < imageIn.getHeight(); j++) {
+					if (Math.abs(imageIn.getRGB(i, j)) <= MAX_RGB &&
+							Math.abs(imageIn.getRGB(i, j)) > MIN_RGB) {
+						tumorPixel++;
+					}
+				}
+			}
+		} catch (IOException | IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		
+		return tumorPixel;
 	}
 	
+	/*
+	 * Saves analyzed image and returns filename for updating main image
+	 */
 	public static String analyzeImage(String dir, String sep, String fileName) {
-		final int MIN_RGB = Integer.parseInt("000000", 16);
-		final int MAX_RGB = Integer.parseInt("444444", 16);
-		final int RED = Integer.parseInt("FF0000", 16);
-		
 		BufferedImage imageIn;
 		BufferedImage imageOut;
 		String newFileName = null;
@@ -35,23 +58,17 @@ public class Analyze {
 					if (Math.abs(imageIn.getRGB(i, j)) <= MAX_RGB &&
 							Math.abs(imageIn.getRGB(i, j)) > MIN_RGB) {
 						imageOut.setRGB(i, j, RED);
-					}
-					else {
+					} else {
 						imageOut.setRGB(i, j, imageIn.getRGB(i, j));
 					}
 				}
 			}
 			
 			ImageIO.write(imageOut, "jpg", output);
-		}
-		catch (IOException | IllegalArgumentException e) {
+		} catch (IOException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		
 		return newFileName;
 	}
-
-//	public static void main(String[] args) {
-//		analyzeImage("mri2.jpg");
-//	}
 }
