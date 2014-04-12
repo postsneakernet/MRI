@@ -1,6 +1,5 @@
 package mri_scanner;
 
-
 import analysis.Analyze;
 import analysis.Graphing;
 
@@ -21,10 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
-/**
- *
- * @author Brian
- */
 public class FXMLDocumentController extends AnchorPane implements Initializable {
     private MRIPrototype application;
     
@@ -83,12 +78,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private ImageView imageChoose8;
     @FXML
     private ImageView imageMain;
-    
     @FXML
-    ImageView setGraphImage;
-    
-    
-    
+    private ImageView imageGraph;
     
     private final int MRI_IMAGE_AMOUNT = 8;
     private String initialDir = "user.dir";
@@ -102,15 +93,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private boolean isValidDir = false;
     
     public void getHelp(ActionEvent event) {
-    
 		try {
-			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + System.getProperty(initialDir) + sep + "Homework5.pdf");
+			Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
+					System.getProperty(initialDir) + sep + "Homework5.pdf");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	
     }
     
     public void setSettings(ActionEvent event) {
@@ -251,7 +239,6 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         	setImageGrid(getPatientMonth());
     	} else {
     		setNullData();
-    		
     	}
     }
     
@@ -273,6 +260,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		imageChoose8.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
 		
 		imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
     }
     
     public File getPatientMonth() {
@@ -318,16 +306,10 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	}
     }
     
-    
-   
-   
-    
-    
-    
     public void analyzeImage(ActionEvent event) {
     	if (dir != null && currentMainImage != null) {
     		Image dfsdfs = Graphing.createGraph();
-    		setGraphImage.setImage(dfsdfs);
+    		imageGraph.setImage(dfsdfs);
     		imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
     	}
     	else {
