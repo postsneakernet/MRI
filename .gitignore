@@ -4,5 +4,6 @@ last-image.analyzed.jpg
 
 # Package Files #
 *.jar
+!xchart-2.3.2.jar
 *.war
 *.ear
