@@ -224,6 +224,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		setNullData();
     		return;
     	}
+    	
     	for (int i = 0; i < patientMonths.listFiles().length; i++) {
 			if (!patientMonths.listFiles()[i].isDirectory()) {
 				System.out.println("File is not a directory");
