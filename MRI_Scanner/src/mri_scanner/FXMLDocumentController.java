@@ -230,9 +230,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	directoryChooser.setTitle("Select MRI patient directory");
     	
     	patientMonths = directoryChooser.showDialog(null);
-    	System.out.println(patientMonths.listFiles().length + " patient months");
     	
     	// validate
+    	if (patientMonths == null) {
+    		setNullData();
+    		return;
+    	}
     	for (int i = 0; i < patientMonths.listFiles().length; i++) {
 			if (!patientMonths.listFiles()[i].isDirectory()) {
 				System.out.println("File is not a directory");
@@ -247,16 +250,33 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         	setSelectedMonth();
         	setImageGrid(getPatientMonth());
     	} else {
-    		monthTotal = 0;
+    		setNullData();
+    		
     	}
     }
     
     /*
-     * Returns directory for a month of MRI images
+     * If invalid directory is selected, clear previous values
      */
+    public void setNullData() {
+    	System.out.println("Directory doesn't contain enough images");
+		labelFeedback.setText("Directory doesn't contain enough images");
+		dir = null;
+		monthTotal = 0;
+		imageChoose1.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose2.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose3.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose4.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose5.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose6.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose7.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		imageChoose8.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+		
+		imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    }
+    
     public File getPatientMonth() {
-    	File file = patientMonths.listFiles()[selectedMonth];
-    	return file;
+    	return patientMonths.listFiles()[selectedMonth];
     }
     
     public void setImageGrid(File file) {
@@ -293,19 +313,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    		imageChoose8.setImage(FileManager.setImage(dir + sep + fileNames.get(7)));
     		}
     		else {
-    			System.out.println("Directory doesn't contain enough images");
-    			labelFeedback.setText("Directory doesn't contain enough images");
-    			dir = null;
-    			imageChoose1.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			imageChoose2.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			imageChoose3.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			imageChoose4.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			imageChoose5.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			imageChoose6.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			imageChoose7.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			imageChoose8.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
-    			
-    			imageMain.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "empty.jpg"));
+    			setNullData();
     		}
     	}
     }
@@ -331,7 +339,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	
-    }    
+    }
     
    	void setApp(MRIPrototype application) {
 	    this.application = application;
