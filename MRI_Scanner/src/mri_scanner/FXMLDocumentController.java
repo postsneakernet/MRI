@@ -104,7 +104,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     public void getHelp(ActionEvent event) {
     
 		try {
-			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + System.getProperty(initialDir) + sep + "user.json");
+			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + System.getProperty(initialDir) + sep + "Homework5.pdf");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
