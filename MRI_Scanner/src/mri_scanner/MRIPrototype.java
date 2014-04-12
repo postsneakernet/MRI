@@ -25,6 +25,7 @@ public class MRIPrototype extends Application {
         stage.setTitle("MRI Image Analysis");
         stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
         stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
+      
         goToPrototype();
         stage.show();
     }

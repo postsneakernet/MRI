@@ -96,7 +96,7 @@
     <HBox layoutX="13.0" layoutY="171.0" prefHeight="35.0" prefWidth="142.0">
       <children>
         <Button fx:id="buttonPrev" mnemonicParsing="false" onAction="#getPrev" text="&lt;" />
-        <Label fx:id="labelSelectedMonth" text="Month #" textFill="WHITE">
+        <Label fx:id="labelMonthNum" text="Month #" textFill="WHITE">
           <HBox.margin>
             <Insets left="5.0" right="5.0" top="5.0" />
           </HBox.margin>
@@ -115,7 +115,26 @@
             <ImageView id="mainImage" fx:id="imageMain" fitHeight="347.0" fitWidth="348.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
           </children>
         </AnchorPane>
-        <AnchorPane prefHeight="437.0" prefWidth="484.0" style="-fx-background-color: #5CCCCC;" />
+        <AnchorPane prefHeight="437.0" prefWidth="484.0" style="-fx-background-color: #5CCCCC;">
+<children>
+<VBox layoutX="174.0" layoutY="369.0">
+<children>
+<HBox layoutX="196.0048828125" layoutY="369.0" spacing="32.0">
+<children><Label layoutX="196.0048828125" layoutY="369.0" text="P Value" /><Label layoutX="262.0048828125" layoutY="369.0" text="C(mg)" />
+</children>
+</HBox>
+<HBox layoutX="174.0" layoutY="385.0" spacing="2.0">
+<children><ComboBox layoutX="139.0" layoutY="387.0" prefHeight="25.0" prefWidth="68.0" /><ComboBox layoutX="222.0" layoutY="387.0" prefHeight="25.0" prefWidth="68.0" />
+</children>
+</HBox>
+</children>
+</VBox>
+<ImageView fx:id="setGraphImage" fitHeight="300.0" fitWidth="438.0" layoutX="23.0" layoutY="53.0">
+<image>
+<Image url="@../../placeholder.png" />
+</image>
+</ImageView>
+</children></AnchorPane>
       </children>
     </HBox>
     <Label fx:id="labelFeedback" layoutX="14.0" prefHeight="16.0" prefWidth="555.0" textFill="WHITE" AnchorPane.bottomAnchor="6.0">
