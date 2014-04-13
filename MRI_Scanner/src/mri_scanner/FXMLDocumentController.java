@@ -10,13 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -26,6 +24,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     
     @FXML
     private Label labelAppName;
+    @FXML
+    private Label labelPatient;
     @FXML
     private Label labelSelectedMonth;
     @FXML
@@ -98,6 +98,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private File patientMonths;
     private int selectedMonth = 0;
     private int monthTotal = 0;
+    private boolean toggleAnalyzed = false;
     
     public void getHelp(ActionEvent event) {
 		try {
@@ -106,10 +107,10 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		labelFeedback.setText("");
     }
     
     public void getSettings(ActionEvent event) {
-    	System.out.println("Settings not supported yet");
     	labelFeedback.setText("Settings not supported yet");
     }
     
@@ -120,7 +121,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	patientMonths = directoryChooser.showDialog(null);
     	
     	if (patientMonths != null && validateDir()) {
-    		monthTotal = patientMonths.listFiles().length;
+    		labelPatient.setText("Patient: " + patientMonths.getName());
         	setSelectedMonth();
         	setImageGrid(getPatientMonth());
         	getTumorArea();
@@ -139,6 +140,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    	labelSlice.setText("Slice: ");
 	    	labelSliceArea.setText("Area: ");
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		toggleAnalyzed = false;
+    	} else {
+    		labelFeedback.setText("");
     	}
     }
     
@@ -150,6 +154,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    	labelSlice.setText("Slice: ");
 	    	labelSliceArea.setText("Area: ");
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		toggleAnalyzed = false;
+    	} else {
+    		labelFeedback.setText("");
     	}
     }
     
@@ -160,6 +167,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 1);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[0]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
@@ -170,6 +179,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 2);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[1]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
@@ -180,6 +191,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 3);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[2]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
@@ -190,6 +203,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 4);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[3]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
@@ -200,6 +215,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 5);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[4]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
@@ -210,6 +227,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 6);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[5]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
@@ -220,6 +239,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 7);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[6]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
@@ -230,13 +251,20 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelSlice.setText("Slice: " + 8);
     		labelSliceArea.setText("Area: " + tumorArea.get(selectedMonth)[7]);
     		labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+    		labelFeedback.setText("");
+    		toggleAnalyzed = false;
     	}
     }
     
-    // TODO toggle show analyzed image
     public void analyzeImage(ActionEvent event) {
     	if (dir != null && currentMainImage != null) {
-    		imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
+    		toggleAnalyzed = !toggleAnalyzed;
+    		if (toggleAnalyzed) {
+    			imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
+    		} else {
+    			imageMain.setImage(FileManager.setImage(dir + sep + currentMainImage));
+    		}
+    		labelFeedback.setText("");
     	} else {
     		labelFeedback.setText("No image selected");
     	}
@@ -247,11 +275,13 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
      */
     public boolean validateDir() {
     	int jpgCount = 0;
+    	monthTotal = 0;
     	
     	for (int i = 0; i < patientMonths.listFiles().length; i++) {
     		File month = patientMonths.listFiles()[i];
     		
 			if (month.isDirectory()) {
+				monthTotal++;
 				for (int j = 0; j < month.listFiles().length; j++) {
 					String f = month.listFiles()[j].getName();
 	    			String[] split = f.split("\\.");
@@ -262,7 +292,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 				}
 			}
 		}
-    	
+
     	return jpgCount > 0 && jpgCount % MRI_IMAGE_AMOUNT == 0;
     }
     
@@ -310,8 +340,13 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
      * Initial directory load
      */
     public void setSelectedMonth() {
+    	selectedMonth = 0;
     	int i = selectedMonth + 1; // label setText doesn't like math operations
     	labelSelectedMonth.setText("Month " + i);
+    	labelSlice.setText("Slice: ");
+		labelSliceArea.setText("Area: ");
+    	imageMain.setImage(null);
+    	toggleAnalyzed = false;
     }
     
     /*
@@ -384,10 +419,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		labelSlice.setText("Slice: ");
 		labelSliceArea.setText("Area: ");
 		labelMonthVolume.setText("Vol: ");
+		labelPatient.setText("Patient: ");
 		dir = null;
 		monthTotal = 0;
 		selectedMonth = 0;
 		setSelectedMonth();
+		
 		imageChoose1.setImage(null);
 		imageChoose2.setImage(null);
 		imageChoose3.setImage(null);

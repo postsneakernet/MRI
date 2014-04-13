@@ -50,8 +50,6 @@ public class Analyze {
 			
 			newFileName = dir + sep + "last-image" + ".analyzed.jpg";
 			File output = new File(newFileName);
-			
-            System.out.printf("Analyzing image %s %n", fileName);
 
 			for (int i = 0; i < imageIn.getWidth(); i++) {
 				for (int j = 0; j < imageIn.getHeight(); j++) {
