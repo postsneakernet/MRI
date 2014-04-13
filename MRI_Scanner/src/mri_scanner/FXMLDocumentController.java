@@ -11,13 +11,22 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBoxBuilder;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class FXMLDocumentController extends AnchorPane implements Initializable {
     private MRIPrototype application;
@@ -99,6 +108,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private int selectedMonth = 0;
     private int monthTotal = 0;
     private boolean toggleAnalyzed = false;
+    private boolean alreadyOpened = false;
     
     public void getHelp(ActionEvent event) {
 		try {
@@ -111,7 +121,36 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     public void getSettings(ActionEvent event) {
-    	labelFeedback.setText("Settings not supported yet");
+    	final Stage myDialog;
+        Button okButton;
+        if (!alreadyOpened) {
+        	alreadyOpened = !alreadyOpened;
+			myDialog = new Stage();
+//			myDialog.initModality(Modality.WINDOW_MODAL);
+			myDialog.initModality(Modality.APPLICATION_MODAL); // always on top
+			myDialog.initStyle(StageStyle.UNDECORATED);
+			okButton = new Button("Save");
+			okButton.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					alreadyOpened = !alreadyOpened;
+					myDialog.close();
+				}
+
+			});
+		
+			Scene myDialogScene = new Scene(VBoxBuilder.create()
+	                .children(new Text("Hello! it's My Dialog."), okButton)
+	                .alignment(Pos.CENTER)
+	                .padding(new Insets(10))
+	                .build());
+	      
+	        myDialog.setScene(myDialogScene);
+	        myDialog.show();
+        }
+        
+        labelFeedback.setText("Settings saved");        
     }
     
     public void getPatientDir(ActionEvent event) {
