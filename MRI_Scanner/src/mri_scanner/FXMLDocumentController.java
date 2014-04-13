@@ -3,13 +3,20 @@ package mri_scanner;
 import analysis.Analyze;
 import analysis.Graphing;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,10 +25,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBoxBuilder;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -97,6 +107,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private ImageView imageChoose8;
     
     private final int MRI_IMAGE_AMOUNT = 8;
+    private final String areaData = "area.dat";
+    private final String mriHelp = "MRI_Help.pdf";
     private String initialDir = "user.dir";
     private String dir = null;
     private String sep = File.separator;
@@ -108,12 +120,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private int selectedMonth = 0;
     private int monthTotal = 0;
     private boolean toggleAnalyzed = false;
-    private boolean alreadyOpened = false;
+    private boolean isSettingsOpened = false;
     
     public void getHelp(ActionEvent event) {
 		try {
 			Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
-					System.getProperty(initialDir) + sep + "Homework5.pdf");
+					System.getProperty(initialDir) + sep + mriHelp);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -121,36 +133,91 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     public void getSettings(ActionEvent event) {
-    	final Stage myDialog;
-        Button okButton;
-        if (!alreadyOpened) {
-        	alreadyOpened = !alreadyOpened;
-			myDialog = new Stage();
-//			myDialog.initModality(Modality.WINDOW_MODAL);
-			myDialog.initModality(Modality.APPLICATION_MODAL); // always on top
-			myDialog.initStyle(StageStyle.UNDECORATED);
-			okButton = new Button("Save");
-			okButton.setOnAction(new EventHandler<ActionEvent>() {
+    	final Stage settingsDialog;
+    	final Text textTitle;
+    	final HBox hBoxTitle;
+    	final HBox hBoxButtons;
+        final Button buttonSave;
+        final Button buttonCancel;
+        final CheckBox checkBoxRememberDir;
+        final CheckBox checkBoxIgnoreAnalyzed;
 
+        if (!isSettingsOpened) {
+        	isSettingsOpened = !isSettingsOpened;
+			settingsDialog = new Stage();
+			settingsDialog.initModality(Modality.APPLICATION_MODAL); // always on top
+			settingsDialog.initStyle(StageStyle.UNDECORATED);
+			
+			textTitle = new Text("MRI Analysis Settings:");
+			textTitle.setFill(Color.WHITE);
+			textTitle.setStyle("-fx-font-weight: bold");
+			
+			hBoxTitle = new HBox();
+			hBoxTitle.setPadding(new Insets(10));
+			
+			hBoxButtons = new HBox();
+			hBoxButtons.setPadding(new Insets(10));
+			hBoxButtons.setSpacing(5);
+			hBoxButtons.setAlignment(Pos.CENTER);
+			
+			hBoxTitle.getChildren().addAll(textTitle);
+			
+			buttonSave = new Button("Save");
+			buttonCancel = new Button("Cancel");
+			
+			checkBoxRememberDir = new CheckBox("Load last patient");
+			checkBoxRememberDir.setTextFill(Color.WHITE);
+			checkBoxRememberDir.setSelected(true);
+			
+			checkBoxIgnoreAnalyzed = new CheckBox("Ignore already analyzed");
+			checkBoxIgnoreAnalyzed.setTextFill(Color.WHITE);
+			checkBoxIgnoreAnalyzed.setSelected(true);
+			
+			buttonSave.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
-				public void handle(ActionEvent arg0) {
-					alreadyOpened = !alreadyOpened;
-					myDialog.close();
+				public void handle(ActionEvent event) {
+					isSettingsOpened = !isSettingsOpened;
+					labelFeedback.setText("Settings saved");  
+					settingsDialog.close();
 				}
-
 			});
+			
+			buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					isSettingsOpened = !isSettingsOpened;
+					labelFeedback.setText("Settings not saved");  
+					settingsDialog.close();
+				}
+			});
+			
+			checkBoxIgnoreAnalyzed.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			    @Override
+			    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//			    	checkBoxIgnoreAnalyzed.setSelected(!newValue);
+			    }
+			});
+			
+			checkBoxRememberDir.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			    @Override
+			    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//			    	checkBoxRememberDir.setSelected(!newValue);
+			    }
+			});
+			
+			hBoxButtons.getChildren().addAll(buttonSave, buttonCancel);
 		
-			Scene myDialogScene = new Scene(VBoxBuilder.create()
-	                .children(new Text("Hello! it's My Dialog."), okButton)
-	                .alignment(Pos.CENTER)
-	                .padding(new Insets(10))
+			Scene settingsScene = new Scene(VBoxBuilder.create()
+	                .children(hBoxTitle, checkBoxRememberDir, checkBoxIgnoreAnalyzed, hBoxButtons)
+	                .alignment(Pos.TOP_LEFT)
+	                .padding(new Insets(40))
+	                .spacing(5)
+	                .style("-fx-background-color:#009999")
 	                .build());
-	      
-	        myDialog.setScene(myDialogScene);
-	        myDialog.show();
-        }
-        
-        labelFeedback.setText("Settings saved");        
+			
+	        settingsDialog.setScene(settingsScene);
+	        settingsDialog.show();
+        }      
     }
     
     public void getPatientDir(ActionEvent event) {
@@ -165,6 +232,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         	setImageGrid(getPatientMonth());
         	getTumorArea();
         	getTumorVolume();
+        	imageGraph.setImage(Graphing.createGraph());
         	labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
     	} else {
     		setNullData();
@@ -335,6 +403,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	return jpgCount > 0 && jpgCount % MRI_IMAGE_AMOUNT == 0;
     }
     
+    /*
+     * Adds area of tumor for each slice for each month to tumor arraylist
+     * Uses previously calculated data from file if it exists
+     * Otherwise calculates it and saves to file in month folder
+     * Units are in pixels
+     */
     public void getTumorArea() {
     	tumorArea.clear();
 
@@ -344,24 +418,72 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		int k = 0; // true index in case month contains non-jpg files
     		
 			if (month.isDirectory()) {
-				for (int j = 0; j < month.listFiles().length; j++) {					
-					String f = month.listFiles()[j].getName();
-	    			String[] split = f.split("\\.");
-	    			
-	    			// only add jpgs and ignore already analyzed
-	    			if (split.length > 1 && split[1].equals("jpg") && k < monthArea.length) {
-	    				monthArea[k] = Analyze.analyzeImage(month.getPath() + sep + f);
-	    				k++;
-	    			}
-				}
+				File data = new File(month.getPath() + sep + areaData);
 				
+				if (data.exists()) { // don't recalculate data
+					System.out.println("Area already calculated, using data from file");
+					monthArea = readData(month.getPath());
+				} else {
+					for (int j = 0; j < month.listFiles().length; j++) {
+						String f = month.listFiles()[j].getName();
+						String[] split = f.split("\\.");
+
+						// only add jpgs and ignore already analyzed
+						if (split.length > 1 && split[1].equals("jpg")
+								&& k < monthArea.length) {
+							monthArea[k] = Analyze.analyzeImage(month.getPath()
+									+ sep + f);
+							k++;
+						}
+					}
+					saveData(month.getPath(), monthArea);
+				}
+
 				tumorArea.add(monthArea);
 			}
 		}
-    	
-    	imageGraph.setImage(Graphing.createGraph());
     }
     
+    /*
+     * Saves area of tumor for entire month to file in the month's directory
+     */
+    public void saveData(String path, Integer[] array) {
+    	String fileName = path + sep + areaData;
+
+    	try (BufferedWriter writer = new BufferedWriter(
+    			new OutputStreamWriter(new FileOutputStream(fileName), "utf-8"))) {
+    	    
+    	    for (int i = 0; i < array.length; i++) {
+				writer.write(String.valueOf(array[i]));
+				writer.newLine();
+			}
+    	} catch (IOException e) {
+    	  e.printStackTrace();
+    	}
+    }
+    
+    /*
+     * Reads area for each slice for a month from a file and returns area in an array
+     */
+    public Integer[] readData(String path) {
+    	String fileName = path + sep + areaData;
+    	Integer[] array = new Integer[MRI_IMAGE_AMOUNT];
+
+    	try (Scanner scan = new Scanner(new File(fileName))) {
+			for (int i = 0; i < array.length; i++) {
+				array[i] = Integer.parseInt(scan.nextLine());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+    	
+    	return array;
+    }
+    
+    /*
+     * Calculates the volume for each month from the area of each slice
+     * Units are in pixels
+     */
     public void getTumorVolume() {
     	tumorVolume.clear();
     	
@@ -376,7 +498,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     /*
-     * Initial directory load
+     * Initial patient directory load
      */
     public void setSelectedMonth() {
     	selectedMonth = 0;
@@ -389,7 +511,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     /*
-     * Previous or next month is selected
+     * Patient directory already loaded and previous or next month is selected
      */
     public void setSelectedMonth(boolean increment) {
     	if (increment) {
@@ -408,10 +530,16 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	labelSelectedMonth.setText("Month " + i);
     }
     
+    /*
+     * Returns the currently selected month
+     */
     public File getPatientMonth() {
     	return patientMonths.listFiles()[selectedMonth];
     }
         
+    /*
+     * Sets the images for the image selection buttons
+     */
     public void setImageGrid(File file) {
     	if (file != null) {
     		dir = file.getPath();
@@ -451,7 +579,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     /*
-     * Clear previous images if invalid directory is selected
+     * Clear previous images for image selection buttons if invalid directory is selected
      */
     public void setNullData() {
 		labelFeedback.setText("Directory doesn't contain enough images");

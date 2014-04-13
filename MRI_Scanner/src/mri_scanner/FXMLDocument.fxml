@@ -26,7 +26,7 @@
         <Button fx:id="buttonHelp" focusTraversable="false" layoutY="27.0" mnemonicParsing="false" onAction="#getHelp" text="Help" AnchorPane.leftAnchor="22.1875" />
         <HBox alignment="CENTER" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="423.0" AnchorPane.topAnchor="30.0">
           <children>
-            <Label id="progName" fx:id="labelAppName" prefHeight="17.0" prefWidth="89.0" text="MRI Analysis " textFill="WHITE" />
+            <Label id="progName" fx:id="labelAppName" prefHeight="17.0" prefWidth="89.0" style="-fx-font-weight: bold;" text="MRI Analysis " textFill="WHITE" />
           </children>
         </HBox>
       </children>

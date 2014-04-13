@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
 
 public class Graphing {
 

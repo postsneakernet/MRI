@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-// TODO move this to a difference package
 public class Settings {
 	static Properties defaultProps = new Properties();
 	static Properties appProps = new Properties(defaultProps);
@@ -16,16 +15,13 @@ public class Settings {
 		try (FileInputStream in = new FileInputStream("defaultProperties")) {
 			defaultProps.load(in);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 	}
 	
 	public static void getProperties() {
 		try (InputStream in = new FileInputStream("appProperties")) {
 			appProps.load(in);
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,17 +34,14 @@ public class Settings {
 		try	(OutputStream out = new FileOutputStream("appProperties")) {
 			appProps.setProperty("mriImages", "user.dir");
 			appProps.store(out, "--No Comment--");
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 //	public static void main(String[] args) {
-//		getDefaultProperties();
-//		setProperties();
+////		getDefaultProperties();
+////		setProperties();
 //		getProperties();
-//		
 //	}
-
 }

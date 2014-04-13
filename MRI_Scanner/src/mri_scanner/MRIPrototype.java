@@ -22,7 +22,7 @@ public class MRIPrototype extends Application {
     @Override
     public void start(Stage stage1) throws Exception {
         stage = stage1;
-        stage.setTitle("MRI Image Analysis");
+        stage.setTitle("MRI Analysis");
         stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
         stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
       
