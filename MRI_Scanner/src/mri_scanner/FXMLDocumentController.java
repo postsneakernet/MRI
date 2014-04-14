@@ -121,7 +121,11 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private int monthTotal = 0;
     private boolean toggleAnalyzed = false;
     private boolean isSettingsOpened = false;
-    
+    private boolean rememberDir = true;
+    private boolean localRememberDir = true;
+    private boolean ignoreAnalyzed = true;
+    private boolean localIgnoreAnalyzed = true;
+   
     public void getHelp(ActionEvent event) {
 		try {
 			Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
@@ -141,6 +145,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         final Button buttonCancel;
         final CheckBox checkBoxRememberDir;
         final CheckBox checkBoxIgnoreAnalyzed;
+        localRememberDir = rememberDir;
+        localIgnoreAnalyzed = ignoreAnalyzed;
 
         if (!isSettingsOpened) {
         	isSettingsOpened = !isSettingsOpened;
@@ -167,16 +173,20 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 			
 			checkBoxRememberDir = new CheckBox("Load last patient on startup");
 			checkBoxRememberDir.setTextFill(Color.WHITE);
-			checkBoxRememberDir.setSelected(true);
+			checkBoxRememberDir.setSelected(localRememberDir);
 			
 			checkBoxIgnoreAnalyzed = new CheckBox("Ignore already analyzed");
 			checkBoxIgnoreAnalyzed.setTextFill(Color.WHITE);
-			checkBoxIgnoreAnalyzed.setSelected(true);
+			checkBoxIgnoreAnalyzed.setSelected(localIgnoreAnalyzed);
 			
 			buttonSave.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
 					isSettingsOpened = !isSettingsOpened;
+					rememberDir = localRememberDir;
+					ignoreAnalyzed = localIgnoreAnalyzed;
+					analysis.Settings.setProperty("rememberDir", Boolean.toString(rememberDir));
+					analysis.Settings.setProperty("ignoreAnalyzed", Boolean.toString(ignoreAnalyzed));
 					labelFeedback.setText("Settings saved");  
 					settingsDialog.close();
 				}
@@ -191,17 +201,17 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 				}
 			});
 			
-			checkBoxIgnoreAnalyzed.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			    @Override
-			    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//			    	checkBoxIgnoreAnalyzed.setSelected(!newValue);
-			    }
-			});
-			
 			checkBoxRememberDir.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			    @Override
 			    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//			    	checkBoxRememberDir.setSelected(!newValue);
+			    	localRememberDir = !localRememberDir;
+			    }
+			});
+			
+			checkBoxIgnoreAnalyzed.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			    @Override
+			    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+			    	localIgnoreAnalyzed = !localIgnoreAnalyzed;
 			    }
 			});
 			
@@ -421,10 +431,11 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 			if (month.isDirectory()) {
 				File data = new File(month.getPath() + sep + areaData);
 				
-				if (data.exists()) { // don't recalculate data
+				if (ignoreAnalyzed && data.exists()) { // don't recalculate data if already available
 					System.out.println("Area already calculated, using data from file");
 					monthArea = readData(month.getPath());
 				} else {
+					System.out.println("Calculating area...");
 					for (int j = 0; j < month.listFiles().length; j++) {
 						String f = month.listFiles()[j].getName();
 						String[] split = f.split("\\.");
@@ -608,13 +619,14 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     /*
-     * Called at program launch, loads previous patient folder
-     * 
+     * Called at program launch, initializes program from saved properties
+     * Loads previous patient directory if enabled in settings
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	analysis.Settings.getDefaultProperties();
-    	boolean rememberDir = Boolean.parseBoolean(analysis.Settings.getProperty("rememberDir"));
+    	rememberDir = Boolean.parseBoolean(analysis.Settings.getProperty("rememberDir"));
+    	ignoreAnalyzed = Boolean.parseBoolean(analysis.Settings.getProperty("ignoreAnalyzed"));
     	
     	if (rememberDir) {
 			String s = analysis.Settings.getProperty("lastPatient");
