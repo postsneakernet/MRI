@@ -165,7 +165,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 			buttonSave = new Button("Save");
 			buttonCancel = new Button("Cancel");
 			
-			checkBoxRememberDir = new CheckBox("Load last patient");
+			checkBoxRememberDir = new CheckBox("Load last patient on startup");
 			checkBoxRememberDir.setTextFill(Color.WHITE);
 			checkBoxRememberDir.setSelected(true);
 			
@@ -234,6 +234,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         	getTumorVolume();
         	imageGraph.setImage(Graphing.createGraph());
         	labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+        	analysis.Settings.setProperty("lastPatient", patientMonths.getPath());
     	} else {
     		setNullData();
     	}
@@ -591,6 +592,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		monthTotal = 0;
 		selectedMonth = 0;
 		setSelectedMonth();
+		analysis.Settings.setProperty("lastPatient", "null");
 		
 		imageChoose1.setImage(null);
 		imageChoose2.setImage(null);
@@ -605,9 +607,32 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "blankgraph.jpg"));
     }
     
+    /*
+     * Called at program launch, loads previous patient folder
+     * 
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    	analysis.Settings.getDefaultProperties();
+    	boolean rememberDir = Boolean.parseBoolean(analysis.Settings.getProperty("rememberDir"));
     	
+    	if (rememberDir) {
+			String s = analysis.Settings.getProperty("lastPatient");
+			
+			if (!s.equals("null")) {
+				patientMonths = new File(s);
+					
+				if (patientMonths.exists() && validateDir()) {
+					labelPatient.setText("Patient: " + patientMonths.getName());
+					setSelectedMonth();
+					setImageGrid(getPatientMonth());
+					getTumorArea();
+					getTumorVolume();
+					imageGraph.setImage(Graphing.createGraph());
+					labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
+				}
+			}
+		}
     }
     
    	void setApp(MRIPrototype application) {
