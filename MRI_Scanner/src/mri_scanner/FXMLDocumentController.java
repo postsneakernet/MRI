@@ -109,6 +109,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private final int MRI_IMAGE_AMOUNT = 8;
     private final String areaData = "area.dat";
     private final String mriHelp = "MRI_Help.pdf";
+    private String env;
     private String initialDir = "user.dir";
     private String dir = null;
     private String sep = File.separator;
@@ -128,8 +129,10 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
    
     public void getHelp(ActionEvent event) {
 		try {
-			Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
-					System.getProperty(initialDir) + sep + mriHelp);
+			if (env.contains("Windows")) {
+				Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
+						System.getProperty(initialDir) + sep + mriHelp);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -624,7 +627,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	System.out.println("OS: " + System.getProperty("os.name"));
+    	env = System.getProperty("os.name");
     	
     	analysis.Settings.getDefaultProperties();
     	rememberDir = Boolean.parseBoolean(analysis.Settings.getProperty("rememberDir"));
