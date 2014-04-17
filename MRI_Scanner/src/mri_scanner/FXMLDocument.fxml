@@ -26,7 +26,7 @@
         <Button fx:id="buttonHelp" focusTraversable="false" layoutY="27.0" mnemonicParsing="false" onAction="#getHelp" text="Help" AnchorPane.leftAnchor="22.1875" />
         <HBox alignment="CENTER" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="423.0" AnchorPane.topAnchor="30.0">
           <children>
-            <Label id="progName" fx:id="labelAppName" prefHeight="17.0" prefWidth="89.0" style="-fx-font-weight: bold;" text="MRI Analysis " textFill="WHITE" />
+            <Label id="progName" fx:id="labelAppName" prefHeight="17.0" prefWidth="93.0" style="-fx-font-weight: bold;" text="MRI Analysis " textFill="WHITE" />
           </children>
         </HBox>
       </children>
@@ -114,8 +114,8 @@
       <children>
         <AnchorPane prefHeight="454.0" prefWidth="353.0" style="-fx-background-color: #5CCCCC;">
           <children>
-            <ImageView id="mainImage" fx:id="imageMain" fitHeight="333.0" fitWidth="317.0" layoutX="18.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" /><Label fx:id="labelPatient" layoutX="51.0" layoutY="362.0" prefHeight="17.0" prefWidth="108.0" text="Patient:" /><Label fx:id="labelSlice" layoutX="51.0" layoutY="379.0" prefHeight="17.0" prefWidth="89.0" text="Slice:" /><Label fx:id="labelSliceArea" layoutX="51.0" layoutY="396.0" prefHeight="17.0" prefWidth="89.0" text="Area:" /><Label fx:id="labelMonthVolume" layoutX="51.0" layoutY="413.0" prefHeight="17.0" prefWidth="89.0" text="Vol:" /><Label layoutX="170.0" layoutY="362.0" prefHeight="17.0" prefWidth="81.0" text="Highlighting:" />
-            <Button fx:id="buttonAnalyze" layoutX="251.0" layoutY="358.0" mnemonicParsing="false" onAction="#analyzeImage" prefHeight="25.0" prefWidth="46.0" text="View" />
+            <ImageView id="mainImage" fx:id="imageMain" fitHeight="333.0" fitWidth="317.0" layoutX="18.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" /><Label fx:id="labelPatient" layoutX="51.0" layoutY="362.0" prefHeight="17.0" prefWidth="108.0" text="Patient:" /><Label fx:id="labelSlice" layoutX="51.0" layoutY="379.0" prefHeight="17.0" prefWidth="89.0" text="Slice:" /><Label fx:id="labelSliceArea" layoutX="51.0" layoutY="396.0" prefHeight="17.0" prefWidth="89.0" text="Area:" /><Label fx:id="labelMonthVolume" layoutX="51.0" layoutY="413.0" prefHeight="17.0" prefWidth="89.0" text="Vol:" /><Label layoutX="162.0" layoutY="362.0" prefHeight="17.0" prefWidth="89.0" text="Highlighting:" />
+            <Button fx:id="buttonAnalyze" layoutX="251.0" layoutY="358.0" mnemonicParsing="false" onAction="#analyzeImage" prefHeight="26.0" prefWidth="49.0" text="View" />
           </children>
         </AnchorPane>
         <AnchorPane prefHeight="454.0" prefWidth="592.0" style="-fx-background-color: #5CCCCC;">
