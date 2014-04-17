@@ -624,6 +624,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    	System.out.println("OS: " + System.getProperty("os.name"));
+    	
     	analysis.Settings.getDefaultProperties();
     	rememberDir = Boolean.parseBoolean(analysis.Settings.getProperty("rememberDir"));
     	ignoreAnalyzed = Boolean.parseBoolean(analysis.Settings.getProperty("ignoreAnalyzed"));
