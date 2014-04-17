@@ -15,6 +15,18 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 public class Graphing {
+	
+	final double pixelToCm = .0000185254;
+	
+	public double calcXCoord(double myVolume, double prevVolume){
+		//V1 = alphaV^p(beta-gammaVsub1^(1-p))-c
+		
+		
+		
+		
+		
+		return 0.0;
+	}
 
 	public static Image createGraph(/*ArrayList<double[]> myData*/) {
 		BufferedImage img = null;
@@ -39,6 +51,8 @@ public class Graphing {
 			datVolume[i] = abc.get(i)[1];
 
 		}
+		
+		
 		
 //		double[] datVolume = new double[myData.size()];
 //		double[] myMonths = new double[myData.size()];
@@ -71,6 +85,10 @@ public class Graphing {
 		}
 
 		return SwingFXUtils.toFXImage(img, null);
+	}
+	
+	public double convertToCm(double myVolume) {
+		return myVolume * this.pixelToCm;
 	}
 
 }
