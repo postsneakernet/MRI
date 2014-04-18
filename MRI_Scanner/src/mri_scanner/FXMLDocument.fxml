@@ -122,7 +122,7 @@
 <children>
 <VBox layoutX="224.0" layoutY="398.0">
 <children>
-<HBox layoutX="196.0048828125" layoutY="369.0" prefHeight="17.0" prefWidth="144.0" spacing="32.0">
+<HBox layoutX="196.0048828125" layoutY="369.0" prefHeight="17.0" prefWidth="144.0" spacing="34.0">
 <children><Label layoutX="196.0048828125" layoutY="369.0" prefHeight="17.0" prefWidth="49.0" text="P Value" /><Label layoutX="262.0048828125" layoutY="369.0" prefHeight="17.0" prefWidth="45.0" text="C (mg)">
 <HBox.margin>
 <Insets />
@@ -130,7 +130,7 @@
 </children>
 </HBox>
 <HBox layoutX="174.0" layoutY="385.0" prefHeight="25.0" prefWidth="179.0" spacing="2.0">
-<children><ComboBox layoutX="139.0" layoutY="387.0" prefHeight="25.0" prefWidth="68.0" /><ComboBox layoutX="222.0" layoutY="387.0" prefHeight="25.0" prefWidth="68.0">
+<children><ComboBox fx:id="comboBoxPValue" layoutX="139.0" layoutY="387.0" prefHeight="26.0" prefWidth="71.0" /><ComboBox fx:id="comboBoxCValue" layoutX="222.0" layoutY="387.0" prefHeight="25.0" prefWidth="68.0">
 <HBox.margin>
 <Insets left="9.0" />
 </HBox.margin></ComboBox>

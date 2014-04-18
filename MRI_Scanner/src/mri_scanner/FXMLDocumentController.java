@@ -17,6 +17,8 @@ import java.util.Scanner;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,6 +28,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -106,6 +109,11 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private ImageView imageChoose8;
     
+    @FXML
+    private ComboBox comboBoxPValue;
+    @FXML
+    private ComboBox comboBoxCValue;
+    
     private final int MRI_IMAGE_AMOUNT = 8;
     private final String areaData = "area.dat";
     private final String mriHelp = "MRI_Help.pdf";
@@ -120,6 +128,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private File patientMonths;
     private int selectedMonth = 0;
     private int monthTotal = 0;
+    private double pSelected;
+    private double cSelected;
     private boolean toggleAnalyzed = false;
     private boolean isSettingsOpened = false;
     private boolean rememberDir = true;
@@ -127,6 +137,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private boolean ignoreAnalyzed = true;
     private boolean localIgnoreAnalyzed = true;
    
+    private ObservableList<String> pOptions = FXCollections.observableArrayList("5/7","3/4","4/5");
+    private ObservableList<String> cOptions = FXCollections.observableArrayList("0.1", "0.2", "0.3");
+    
     public void getHelp(ActionEvent event) {
 		try {
 			if (env.contains("Windows")) {
@@ -622,12 +635,50 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     /*
+     * Converts selected combobox value from string to double and return value
+     */
+    public double convertDouble(String s) {
+    	String[] split = s.split("/");
+    	double d;
+    	
+    	if (split.length == 2) {
+    		// converts string values like 5/4
+    		d = Double.parseDouble(split[0]) / Double.parseDouble(split[1]);
+    	} else {
+    		d = Double.parseDouble(s);
+    	}
+    	
+    	return d;
+    }
+    
+    /*
      * Called at program launch, initializes program from saved properties
      * Loads previous patient directory if enabled in settings
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void initialize(URL url, ResourceBundle rb) {
     	env = System.getProperty("os.name");
+    	
+    	comboBoxPValue.getItems().addAll(pOptions);
+    	comboBoxPValue.setValue("5/7");
+    	pSelected = convertDouble((String)comboBoxPValue.getValue());
+    	
+    	comboBoxPValue.valueProperty().addListener(new ChangeListener<String>() {
+            @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+            	pSelected = convertDouble(newValue);
+            }    
+        });
+    	
+    	comboBoxCValue.getItems().addAll(cOptions);
+    	comboBoxCValue.setValue("0.1");
+    	cSelected = convertDouble((String)comboBoxCValue.getValue());
+    	
+    	comboBoxCValue.valueProperty().addListener(new ChangeListener<String>() {
+            @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+            	cSelected = convertDouble(newValue);
+            }    
+        });
     	
     	analysis.Settings.getDefaultProperties();
     	rememberDir = Boolean.parseBoolean(analysis.Settings.getProperty("rememberDir"));
