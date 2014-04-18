@@ -3,6 +3,7 @@ package mri_scanner;
 import analysis.Analyze;
 import analysis.Graphing;
 
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -145,6 +146,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 			if (env.contains("Windows")) {
 				Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
 						System.getProperty(initialDir) + sep + mriHelp);
+			} else if (env.contains("Mac")) {
+				Runtime.getRuntime().exec("open " + System.getProperty(initialDir) + sep + mriHelp);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
