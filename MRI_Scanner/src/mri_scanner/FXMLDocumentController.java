@@ -670,6 +670,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	comboBoxPValue.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
             	pSelected = convertDouble(newValue);
+            	if (dir != null) {
+            		imageGraph.setImage(Graphing.createGraph()); // TODO: pass pSelected, cSelected to graph
+            	}
             }    
         });
     	
@@ -680,6 +683,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	comboBoxCValue.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
             	cSelected = convertDouble(newValue);
+            	if (dir != null) {
+            		imageGraph.setImage(Graphing.createGraph());
+            	}
             }    
         });
     	
