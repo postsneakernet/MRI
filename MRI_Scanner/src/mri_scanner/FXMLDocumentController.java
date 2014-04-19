@@ -671,7 +671,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
             @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
             	pSelected = convertDouble(newValue);
             	if (dir != null) {
-            		imageGraph.setImage(Graphing.createGraph()); // TODO: pass pSelected, cSelected to graph
+            		imageGraph.setImage(Graphing.createGraph(tumorVolume, pSelected, cSelected)); // TODO: pass pSelected, cSelected to graph
             	}
             }    
         });
@@ -684,7 +684,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
             @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
             	cSelected = convertDouble(newValue);
             	if (dir != null) {
-            		imageGraph.setImage(Graphing.createGraph());
+            		imageGraph.setImage(Graphing.createGraph(tumorVolume, pSelected, cSelected));
             	}
             }    
         });
