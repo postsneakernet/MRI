@@ -261,7 +261,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         	setImageGrid(getPatientMonth());
         	getTumorArea();
         	getTumorVolume();
-        	imageGraph.setImage(Graphing.createGraph());
+        	imageGraph.setImage(Graphing.createGraph(tumorVolume, pSelected, cSelected);
         	labelMonthVolume.setText("Vol: " + tumorVolume.get(selectedMonth));
         	analysis.Settings.setProperty("lastPatient", patientMonths.getPath());
     	} else {
