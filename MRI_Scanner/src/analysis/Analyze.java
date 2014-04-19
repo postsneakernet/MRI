@@ -10,7 +10,8 @@ public class Analyze {
 	final static int MIN_RGB = Integer.parseInt("000000", 16);
 	final static int MAX_RGB = Integer.parseInt("444444", 16);
 	final static int RED = Integer.parseInt("FF0000", 16);
-	final static double PIXEL_TO_CM = .0000185254;
+	final static double PIXEL_SQUARE = .0264583;
+	final static double PIXEL_CUBE = .0000185254;
 	
 	/*
 	 * Returns amount of pixels in tumor
@@ -71,7 +72,7 @@ public class Analyze {
 		return newFileName;
 	}
 	
-	public static double convertToCm(double pixelVol) {
-		return pixelVol * PIXEL_TO_CM;
+	public static double convertToCm(double pixels) {
+		return pixels * PIXEL_SQUARE;
 	}
 }
