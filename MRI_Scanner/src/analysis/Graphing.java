@@ -94,9 +94,9 @@ public class Graphing {
 		 double V = 0;
 		 int i = 0;
 		 for(double u = 0.0; u<6; u+=0.1){
-			 System.out.println(p);
+			// System.out.println(p);
 			 V = (Math.pow(u, p))*(1-Math.pow(u, 1-p)) - c;
-			 System.out.println(i);
+			 //System.out.println(i);
 			 uSeriesY[i] = V;
 			 uSeriesX[i] = u;
 			 
