@@ -445,6 +445,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    				jpgCount++;
 	    			}
 				}
+			} else {
+				return false;
 			}
 		}
 
@@ -661,7 +663,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
      * Clear previous images for image selection buttons if invalid directory is selected
      */
     public void setNullData() {
-		labelFeedback.setText("Directory doesn't contain enough images");
+		labelFeedback.setText("Invalid directory selected.");
 		labelSlice.setText("Slice: ");
 		labelSliceArea.setText("Area: ");
 		labelMonthVolume.setText("Vol: ");
