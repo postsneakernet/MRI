@@ -2,20 +2,15 @@ package mri_scanner;
 
 import analysis.Analyze;
 import analysis.Graphing;
+import analysis.Settings;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -116,21 +111,16 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private ComboBox comboBoxCValue;
     
-    private final int MRI_IMAGE_AMOUNT = 8;
-    private final String areaData = "area.dat";
-    private final String mriHelp = "MRI_Help.pdf";
     private final String cmsq = " cm\u00B2";
     private final String cmcu = " cm\u00B3";
     private String env;
     private String initialDir = "user.dir";
     private String dir = null;
-    private String sep = File.separator;
     private String currentMainImage = null;
     private DecimalFormat df = new DecimalFormat("0.000");
     private List<String> fileNames = new  ArrayList<String>();
-    private List<Integer[]> tumorArea = new ArrayList<Integer[]>();
+    public static List<Integer[]> tumorArea = new ArrayList<Integer[]>();
     private List<Double[]> cmTumorArea = new ArrayList<Double[]>();
-    private List<Double> tumorVolume = new ArrayList<Double>();
     private List<Double> cmTumorVolume = new ArrayList<Double>();
     private File patientMonths;
     private int selectedMonth = 0;
@@ -141,7 +131,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private boolean isSettingsOpened = false;
     private boolean rememberDir = true;
     private boolean localRememberDir = true;
-    private boolean ignoreAnalyzed = true;
+    public static boolean ignoreAnalyzed = true;
     private boolean localIgnoreAnalyzed = true;
     
     ColorAdjust colorAdjust = new ColorAdjust();
@@ -153,9 +143,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		try {
 			if (env.contains("Windows")) {
 				Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
-						System.getProperty(initialDir) + sep + mriHelp);
+						System.getProperty(initialDir) + FileManager.sep + FileManager.mriHelp);
 			} else if (env.contains("Mac")) {
-				Runtime.getRuntime().exec("open " + System.getProperty(initialDir) + sep + mriHelp);
+				Runtime.getRuntime().exec("open " + System.getProperty(initialDir) + FileManager.sep + FileManager.mriHelp);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -212,8 +202,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 					isSettingsOpened = !isSettingsOpened;
 					rememberDir = localRememberDir;
 					ignoreAnalyzed = localIgnoreAnalyzed;
-					analysis.Settings.setProperty("rememberDir", Boolean.toString(rememberDir));
-					analysis.Settings.setProperty("ignoreAnalyzed", Boolean.toString(ignoreAnalyzed));
+					Settings.setProperty("rememberDir", Boolean.toString(rememberDir));
+					Settings.setProperty("ignoreAnalyzed", Boolean.toString(ignoreAnalyzed));
 					labelFeedback.setText("Settings saved");  
 					settingsDialog.close();
 				}
@@ -268,11 +258,11 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelPatient.setText("Patient: " + patientMonths.getName());
         	setSelectedMonth();
         	setImageGrid(getPatientMonth());
-        	getTumorArea();
-        	getTumorVolume();
+        	cmTumorArea = Analyze.getTumorArea(patientMonths);
+        	cmTumorVolume = Analyze.getTumorVolume(tumorArea);
         	imageGraph.setImage(Graphing.createGraph(cmTumorVolume, pSelected, cSelected));
         	labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-        	analysis.Settings.setProperty("lastPatient", patientMonths.getPath());
+        	Settings.setProperty("lastPatient", patientMonths.getPath());
     	} else if (patientMonths == null && dir != null) {
     		patientMonths = prevPatientMonths;
     	} else {
@@ -311,106 +301,58 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     }
     
     public void setImage1(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose1.getImage());
-    		currentMainImage = fileNames.get(0);
-    		labelSlice.setText("Slice: " + 1);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[0]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(0);
     	}
     }
     
     public void setImage2(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose2.getImage());
-    		currentMainImage = fileNames.get(1);
-    		labelSlice.setText("Slice: " + 2);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[1]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(1);
     	}
     }
     
     public void setImage3(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose3.getImage());
-    		currentMainImage = fileNames.get(2);
-    		labelSlice.setText("Slice: " + 3);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[2]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(2);
     	}
     }
     
     public void setImage4(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose4.getImage());
-    		currentMainImage = fileNames.get(3);
-    		labelSlice.setText("Slice: " + 4);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[3]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(3);
     	}
     }
     
     public void setImage5(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose5.getImage());
-    		currentMainImage = fileNames.get(4);
-    		labelSlice.setText("Slice: " + 5);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[4]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(4);
     	}
     }
     
     public void setImage6(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose6.getImage());
-    		currentMainImage = fileNames.get(5);
-    		labelSlice.setText("Slice: " + 6);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[5]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(5);
     	}
     }
     
     public void setImage7(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose7.getImage());
-    		currentMainImage = fileNames.get(6);
-    		labelSlice.setText("Slice: " + 7);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[6]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(6);
     	}
     }
     
     public void setImage8(ActionEvent event) {
-    	if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
+    	if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
     		imageMain.setImage(imageChoose8.getImage());
-    		currentMainImage = fileNames.get(7);
-    		labelSlice.setText("Slice: " + 8);
-    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[7]) + cmsq);
-    		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
-    		labelFeedback.setText("");
-    		toggleAnalyzed = false;
-    		buttonAnalyze.setEffect(null);
+    		setGUIData(7);
     	}
     }
     
@@ -419,10 +361,10 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		toggleAnalyzed = !toggleAnalyzed;
     		if (toggleAnalyzed) {
     			buttonAnalyze.setEffect(colorAdjust);
-    			imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
+    			imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, FileManager.sep, dir + FileManager.sep + currentMainImage)));
     		} else {
     			buttonAnalyze.setEffect(null);
-    			imageMain.setImage(FileManager.setImage(dir + sep + currentMainImage));
+    			imageMain.setImage(FileManager.setImage(dir + FileManager.sep + currentMainImage));
     		}
     		labelFeedback.setText("");
     	} else {
@@ -456,131 +398,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 			}
 		}
 
-    	return jpgCount > 0 && jpgCount % MRI_IMAGE_AMOUNT == 0;
-    }
-    
-    /*
-     * Adds area of tumor for each slice for each month to tumor arraylist
-     * Uses previously calculated data from file if it exists
-     * Otherwise calculates it and saves to file in month folder
-     * Units are in pixels
-     */
-    public void getTumorArea() {
-    	tumorArea.clear();
-
-    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
-    		File month = patientMonths.listFiles()[i];
-    		Integer[] monthArea = new Integer[MRI_IMAGE_AMOUNT];
-    		int k = 0; // true index in case month contains non-jpg files
-    		
-			if (month.isDirectory()) {
-				File data = new File(month.getPath() + sep + areaData);
-				
-				if (ignoreAnalyzed && data.exists()) { // don't recalculate data if already available
-					System.out.println("Area already calculated, using data from file");
-					monthArea = readData(month.getPath());
-				} else {
-					System.out.println("Calculating area...");
-					for (int j = 0; j < month.listFiles().length; j++) {
-						String f = month.listFiles()[j].getName();
-						String[] split = f.split("\\.");
-
-						// only add jpgs and ignore already analyzed
-						if (split.length > 1 && split[1].equals("jpg")
-								&& k < monthArea.length) {
-							monthArea[k] = Analyze.analyzeImage(month.getPath()
-									+ sep + f);
-							k++;
-						}
-					}
-					saveData(month.getPath(), monthArea);
-				}
-
-				tumorArea.add(monthArea);
-			}
-		}
-    	
-    	cmTumorArea.clear();
-    	
-    	for (Integer[] iArray: tumorArea) {
-    		Double[] cmMonthArea = new Double[MRI_IMAGE_AMOUNT];
-    		for (int i = 0; i < iArray.length; i++) {
-    			cmMonthArea[i] = analysis.Analyze.convertToCm(iArray[i], true);
-    		}
-    		
-    		cmTumorArea.add(cmMonthArea);
-    	}
-    }
-    
-    /*
-     * Saves area of tumor for entire month to file in the month's directory
-     */
-    public void saveData(String path, Integer[] array) {
-    	String fileName = path + sep + areaData;
-
-    	try (BufferedWriter writer = new BufferedWriter(
-    			new OutputStreamWriter(new FileOutputStream(fileName), "utf-8"))) {
-    	    
-    	    for (int i = 0; i < array.length; i++) {
-				writer.write(String.valueOf(array[i]));
-				writer.newLine();
-			}
-    	} catch (IOException e) {
-    	  e.printStackTrace();
-    	}
-    }
-    
-    /*
-     * Reads area for each slice for a month from a file and returns area in an array
-     */
-    public Integer[] readData(String path) {
-    	String fileName = path + sep + areaData;
-    	Integer[] array = new Integer[MRI_IMAGE_AMOUNT];
-
-    	try (Scanner scan = new Scanner(new File(fileName))) {
-			for (int i = 0; i < array.length; i++) {
-				array[i] = Integer.parseInt(scan.nextLine());
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-    	
-    	return array;
-    }
-    
-    /*
-     * Calculates the volume for each month from the area of each slice
-     * Units are in pixels
-     */
-    public void getTumorVolume() {
-    	tumorVolume.clear();
-    	double monthVolume;
-    	
-    	for (Integer[] iArray: tumorArea) {
-    		monthVolume = 0;
-    		for (int i = 0; i < iArray.length; i++) {
-    			monthVolume += iArray[i];
-    		}
-
-    		tumorVolume.add(monthVolume);
-    	}
-    	
-    	cmTumorVolume.clear();
-    	// testing cm
-    	for (Double d: tumorVolume) {
-    		monthVolume = analysis.Analyze.convertToCm(d, false);
-    		cmTumorVolume.add(monthVolume);
-    	}
-    	
-    	// old version
-//    	for (Double[] dArray: cmTumorArea) {
-//    		monthVolume = 0;
-//    		for (int i = 0; i < dArray.length; i++) {
-//    			monthVolume += dArray[i];
-//    		}
-//    		
-//    		cmTumorVolume.add(monthVolume);
-//    	}
+    	return jpgCount > 0 && jpgCount % FileManager.MRI_IMAGE_AMOUNT == 0;
     }
     
     /*
@@ -623,6 +441,17 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     public File getPatientMonth() {
     	return patientMonths.listFiles()[selectedMonth];
     }
+    
+    public void setGUIData(int i) {
+    	int num = i + 1;
+		currentMainImage = fileNames.get(i);
+		labelSlice.setText("Slice: " + num);
+		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[i]) + cmsq);
+		labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
+		labelFeedback.setText("");
+		toggleAnalyzed = false;
+		buttonAnalyze.setEffect(null);
+    }
         
     /*
      * Sets the images for the image selection buttons
@@ -649,15 +478,15 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     			}
     		}
     		
-    		if (fileNames.size() >= MRI_IMAGE_AMOUNT) {
-	    		imageChoose1.setImage(FileManager.setImage(dir + sep + fileNames.get(0)));
-	    		imageChoose2.setImage(FileManager.setImage(dir + sep + fileNames.get(1)));
-	    		imageChoose3.setImage(FileManager.setImage(dir + sep + fileNames.get(2)));
-	    		imageChoose4.setImage(FileManager.setImage(dir + sep + fileNames.get(3)));
-	    		imageChoose5.setImage(FileManager.setImage(dir + sep + fileNames.get(4)));
-	    		imageChoose6.setImage(FileManager.setImage(dir + sep + fileNames.get(5)));
-	    		imageChoose7.setImage(FileManager.setImage(dir + sep + fileNames.get(6)));
-	    		imageChoose8.setImage(FileManager.setImage(dir + sep + fileNames.get(7)));
+    		if (fileNames.size() >= FileManager.MRI_IMAGE_AMOUNT) {
+	    		imageChoose1.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(0)));
+	    		imageChoose2.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(1)));
+	    		imageChoose3.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(2)));
+	    		imageChoose4.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(3)));
+	    		imageChoose5.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(4)));
+	    		imageChoose6.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(5)));
+	    		imageChoose7.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(6)));
+	    		imageChoose8.setImage(FileManager.setImage(dir + FileManager.sep + fileNames.get(7)));
     		}
     		else {
     			setNullData();
@@ -678,7 +507,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		monthTotal = 0;
 		selectedMonth = 0;
 		setSelectedMonth();
-		analysis.Settings.setProperty("lastPatient", "null");
+		Settings.setProperty("lastPatient", "null");
 		
 		imageChoose1.setImage(null);
 		imageChoose2.setImage(null);
@@ -690,24 +519,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		imageChoose8.setImage(null);
 		
 		imageMain.setImage(null);
-		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + sep + "blankgraph.jpg"));
-    }
-    
-    /*
-     * Converts selected combobox value from string to double and return value
-     */
-    public double convertDouble(String s) {
-    	String[] split = s.split("/");
-    	double d;
-    	
-    	if (split.length == 2) {
-    		// converts string values like 5/4
-    		d = Double.parseDouble(split[0]) / Double.parseDouble(split[1]);
-    	} else {
-    		d = Double.parseDouble(s);
-    	}
-    	
-    	return d;
+		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + FileManager.sep + "blankgraph.jpg"));
     }
     
     /*
@@ -721,11 +533,11 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	
     	comboBoxPValue.getItems().addAll(pOptions);
     	comboBoxPValue.setValue("5/7");
-    	pSelected = convertDouble((String)comboBoxPValue.getValue());
+    	pSelected = Analyze.convertDouble((String)comboBoxPValue.getValue());
     	
     	comboBoxPValue.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
-            	pSelected = convertDouble(newValue);
+            	pSelected = Analyze.convertDouble(newValue);
             	if (dir != null) {
             		imageGraph.setImage(Graphing.createGraph(cmTumorVolume, pSelected, cSelected));
             	}
@@ -734,23 +546,23 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	
     	comboBoxCValue.getItems().addAll(cOptions);
     	comboBoxCValue.setValue("0.1");
-    	cSelected = convertDouble((String)comboBoxCValue.getValue());
+    	cSelected = Analyze.convertDouble((String)comboBoxCValue.getValue());
     	
     	comboBoxCValue.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
-            	cSelected = convertDouble(newValue);
+            	cSelected = Analyze.convertDouble(newValue);
             	if (dir != null) {
             		imageGraph.setImage(Graphing.createGraph(cmTumorVolume, pSelected, cSelected));
             	}
             }    
         });
     	
-    	analysis.Settings.getDefaultProperties();
-    	rememberDir = Boolean.parseBoolean(analysis.Settings.getProperty("rememberDir"));
-    	ignoreAnalyzed = Boolean.parseBoolean(analysis.Settings.getProperty("ignoreAnalyzed"));
+    	Settings.getDefaultProperties();
+    	rememberDir = Boolean.parseBoolean(Settings.getProperty("rememberDir"));
+    	ignoreAnalyzed = Boolean.parseBoolean(Settings.getProperty("ignoreAnalyzed"));
     	
     	if (rememberDir) {
-			String s = analysis.Settings.getProperty("lastPatient");
+			String s = Settings.getProperty("lastPatient");
 			
 			if (!s.equals("null")) {
 				patientMonths = new File(s);
@@ -759,8 +571,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 					labelPatient.setText("Patient: " + patientMonths.getName());
 					setSelectedMonth();
 					setImageGrid(getPatientMonth());
-					getTumorArea();
-					getTumorVolume();
+					cmTumorArea = Analyze.getTumorArea(patientMonths);
+					cmTumorVolume = Analyze.getTumorVolume(tumorArea);
 					imageGraph.setImage(Graphing.createGraph(cmTumorVolume, pSelected, cSelected));
 					labelMonthVolume.setText("Vol:   " + df.format(cmTumorVolume.get(selectedMonth)) + cmcu);
 				}

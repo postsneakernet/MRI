@@ -5,12 +5,16 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class Analyze {
+import mri_scanner.FXMLDocumentController;
+import mri_scanner.FileManager;
 
+public class Analyze {
 	final static double PIXEL_SQUARE = .00070004;
 	final static double PIXEL_CUBE = .0000185254;
 	final static int brightness3 = 85;
@@ -18,7 +22,6 @@ public class Analyze {
 	/*
 	 * Returns amount of pixels in tumor
 	 */
-
 	public static int getBrightness(BufferedImage image, int x, int y) {
 		int brightness = 0;
 
@@ -228,4 +231,108 @@ public class Analyze {
 			return pixels * PIXEL_CUBE;
 		}
 	}
+	
+	/*
+     * Converts selected combobox value from string to double and return value
+     */
+    public static double convertDouble(String s) {
+    	String[] split = s.split("/");
+    	double d;
+    	
+    	if (split.length == 2) {
+    		// converts string values like 5/4
+    		d = Double.parseDouble(split[0]) / Double.parseDouble(split[1]);
+    	} else {
+    		d = Double.parseDouble(s);
+    	}
+    	
+    	return d;
+    }
+    
+    /*
+     * Adds area of tumor for each slice for each month to tumor arraylist
+     * Uses previously calculated data from file if it exists
+     * Otherwise calculates it and saves to file in month folder
+     * Units are in pixels
+     */
+    public static List<Double[]> getTumorArea(File patientMonths) {
+    	List<Integer[]> tumorArea = new ArrayList<Integer[]>();
+    	List<Double[]> cmTumorArea = new ArrayList<Double[]>();
+    	tumorArea.clear();
+
+    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
+    		File month = patientMonths.listFiles()[i];
+    		Integer[] monthArea = new Integer[FileManager.MRI_IMAGE_AMOUNT];
+    		int k = 0; // true index in case month contains non-jpg files
+    		
+			if (month.isDirectory()) {
+				File data = new File(month.getPath() + FileManager.sep + FileManager.areaData);
+				
+				if (FXMLDocumentController.ignoreAnalyzed && data.exists()) { // don't recalculate data if already available
+					System.out.println("Area already calculated, using data from file");
+					monthArea = FileManager.readData(month.getPath());
+				} else {
+					System.out.println("Calculating area...");
+					for (int j = 0; j < month.listFiles().length; j++) {
+						String f = month.listFiles()[j].getName();
+						String[] split = f.split("\\.");
+
+						// only add jpgs and ignore already analyzed
+						if (split.length > 1 && split[1].equals("jpg")
+								&& k < monthArea.length) {
+							monthArea[k] = Analyze.analyzeImage(month.getPath()
+									+ FileManager.sep + f);
+							k++;
+						}
+					}
+					FileManager.saveData(month.getPath(), monthArea);
+				}
+
+				tumorArea.add(monthArea);
+			}
+		}
+    	FXMLDocumentController.tumorArea = tumorArea; // updates tumorArea
+    	
+    	cmTumorArea.clear();
+    	
+    	for (Integer[] iArray: tumorArea) {
+    		Double[] cmMonthArea = new Double[FileManager.MRI_IMAGE_AMOUNT];
+    		for (int i = 0; i < iArray.length; i++) {
+    			cmMonthArea[i] = analysis.Analyze.convertToCm(iArray[i], true);
+    		}
+    		
+    		cmTumorArea.add(cmMonthArea);
+    	}
+    	
+    	return cmTumorArea;
+    }
+    
+    /*
+     * Calculates the volume for each month from the area of each slice
+     * Units are in pixels
+     */
+    public static List<Double> getTumorVolume(List<Integer[]> tumorArea) {
+    	List<Double> tumorVolume = new ArrayList<Double>();
+    	List<Double> cmTumorVolume = new ArrayList<Double>();
+    	tumorVolume.clear();
+    	double monthVolume;
+    	
+    	for (Integer[] iArray: tumorArea) {
+    		monthVolume = 0;
+    		for (int i = 0; i < iArray.length; i++) {
+    			monthVolume += iArray[i];
+    		}
+
+    		tumorVolume.add(monthVolume);
+    	}
+    	
+    	cmTumorVolume.clear();
+
+    	for (Double d: tumorVolume) {
+    		monthVolume = analysis.Analyze.convertToCm(d, false);
+    		cmTumorVolume.add(monthVolume);
+    	}
+    	
+    	return cmTumorVolume;
+    }
 }
