@@ -3,7 +3,6 @@ package mri_scanner;
 import analysis.Analyze;
 import analysis.Graphing;
 
-import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +31,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -141,17 +141,13 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private boolean localRememberDir = true;
     private boolean ignoreAnalyzed = true;
     private boolean localIgnoreAnalyzed = true;
+    
+    ColorAdjust colorAdjust = new ColorAdjust();
    
     private ObservableList<String> pOptions = FXCollections.observableArrayList("5/7","3/4","4/5");
     private ObservableList<String> cOptions = FXCollections.observableArrayList("0.1", "0.2", "0.3");
     
     public void getHelp(ActionEvent event) {
-    	for (int i = 0; i < tumorArea.size(); i++) {
-    		for (int j = 0; j < tumorArea.get(i).length; j++) {
-    			System.out.println("Tumor Area: " + tumorArea.get(i)[j]);
-    		}
-    	}
-    	
 		try {
 			if (env.contains("Windows")) {
 				Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
@@ -288,6 +284,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    	labelSliceArea.setText("Area: ");
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	} else {
     		labelFeedback.setText("");
     	}
@@ -302,6 +299,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    	labelSliceArea.setText("Area: ");
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	} else {
     		labelFeedback.setText("");
     	}
@@ -316,6 +314,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -328,6 +327,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -340,6 +340,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -352,6 +353,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -364,6 +366,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -376,6 +379,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -388,6 +392,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -400,6 +405,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
+    		buttonAnalyze.setEffect(null);
     	}
     }
     
@@ -407,8 +413,10 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	if (dir != null && currentMainImage != null) {
     		toggleAnalyzed = !toggleAnalyzed;
     		if (toggleAnalyzed) {
+    			buttonAnalyze.setEffect(colorAdjust);
     			imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, sep, dir + sep + currentMainImage)));
     		} else {
+    			buttonAnalyze.setEffect(null);
     			imageMain.setImage(FileManager.setImage(dir + sep + currentMainImage));
     		}
     		labelFeedback.setText("");
@@ -578,6 +586,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		labelSliceArea.setText("Area: ");
     	imageMain.setImage(null);
     	toggleAnalyzed = false;
+    	buttonAnalyze.setEffect(null);
     }
     
     /*
@@ -749,6 +758,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 				}
 			}
 		}
+    	
+    	colorAdjust.setHue(-.6);
+    	colorAdjust.setSaturation(.35);
     }
     
    	void setApp(MRIPrototype application) {
