@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -123,6 +124,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private String dir = null;
     private String sep = File.separator;
     private String currentMainImage = null;
+    private DecimalFormat df = new DecimalFormat("0.000");
     private List<String> fileNames = new  ArrayList<String>();
     private List<Integer[]> tumorArea = new ArrayList<Integer[]>();
     private List<Double[]> cmTumorArea = new ArrayList<Double[]>();
@@ -264,7 +266,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         	getTumorArea();
         	getTumorVolume();
         	imageGraph.setImage(Graphing.createGraph(cmTumorVolume, pSelected, cSelected));
-        	labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+        	labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
         	analysis.Settings.setProperty("lastPatient", patientMonths.getPath());
     	} else {
     		setNullData();
@@ -278,7 +280,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    	imageMain.setImage(null);
 	    	labelSlice.setText("Slice: ");
 	    	labelSliceArea.setText("Area: ");
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		toggleAnalyzed = false;
     	} else {
     		labelFeedback.setText("");
@@ -292,7 +294,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	    	imageMain.setImage(null);
 	    	labelSlice.setText("Slice: ");
 	    	labelSliceArea.setText("Area: ");
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		toggleAnalyzed = false;
     	} else {
     		labelFeedback.setText("");
@@ -304,8 +306,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose1.getImage());
     		currentMainImage = fileNames.get(0);
     		labelSlice.setText("Slice: " + 1);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[0]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[0]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -316,8 +318,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose2.getImage());
     		currentMainImage = fileNames.get(1);
     		labelSlice.setText("Slice: " + 2);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[1]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[1]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -328,8 +330,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose3.getImage());
     		currentMainImage = fileNames.get(2);
     		labelSlice.setText("Slice: " + 3);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[2]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[2]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -340,8 +342,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose4.getImage());
     		currentMainImage = fileNames.get(3);
     		labelSlice.setText("Slice: " + 4);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[3]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[3]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -352,8 +354,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose5.getImage());
     		currentMainImage = fileNames.get(4);
     		labelSlice.setText("Slice: " + 5);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[4]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[4]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -364,8 +366,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose6.getImage());
     		currentMainImage = fileNames.get(5);
     		labelSlice.setText("Slice: " + 6);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[5]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[5]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -376,8 +378,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose7.getImage());
     		currentMainImage = fileNames.get(6);
     		labelSlice.setText("Slice: " + 7);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[6]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[6]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -388,8 +390,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		imageMain.setImage(imageChoose8.getImage());
     		currentMainImage = fileNames.get(7);
     		labelSlice.setText("Slice: " + 8);
-    		labelSliceArea.setText("Area: " + cmTumorArea.get(selectedMonth)[7]);
-    		labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+    		labelSliceArea.setText("Area: " + df.format(cmTumorArea.get(selectedMonth)[7]) + " cm");
+    		labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
     		labelFeedback.setText("");
     		toggleAnalyzed = false;
     	}
@@ -731,7 +733,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 					getTumorArea();
 					getTumorVolume();
 					imageGraph.setImage(Graphing.createGraph(cmTumorVolume, pSelected, cSelected));
-					labelMonthVolume.setText("Vol: " + cmTumorVolume.get(selectedMonth));
+					labelMonthVolume.setText("Vol: " + df.format(cmTumorVolume.get(selectedMonth)) + " cm");
 				}
 			}
 		}
