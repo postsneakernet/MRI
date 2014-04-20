@@ -154,7 +154,7 @@ public class Analyze {
 					if (getBrightness(input1, i, j) >= 150) {
 
 						findRegion(region1, input1, i, j);
-						System.out.println(i + " " + j);
+						//System.out.println(i + " " + j);
 
 					}
 
