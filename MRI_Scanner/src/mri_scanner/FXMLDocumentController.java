@@ -111,45 +111,33 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @FXML
     private ComboBox comboBoxCValue;
     
+    private ColorAdjust colorAdjust = new ColorAdjust();
+    
     private final String cmsq = " cm\u00B2";
     private final String cmcu = " cm\u00B3";
-    private String env;
-    private String initialDir = "user.dir";
+    private DecimalFormat df = new DecimalFormat("0.000");
     private String dir = null;
     private String currentMainImage = null;
-    private DecimalFormat df = new DecimalFormat("0.000");
-    private List<String> fileNames = new  ArrayList<String>();
     public static List<Integer[]> tumorArea = new ArrayList<Integer[]>();
+    private List<String> fileNames = new  ArrayList<String>();
     private List<Double[]> cmTumorArea = new ArrayList<Double[]>();
     private List<Double> cmTumorVolume = new ArrayList<Double>();
+    private ObservableList<String> pOptions = FXCollections.observableArrayList("5/7","3/4","4/5");
+    private ObservableList<String> cOptions = FXCollections.observableArrayList("0.1", "0.2", "0.3");
     private File patientMonths;
+    public static int monthTotal = 0;
     private int selectedMonth = 0;
-    private int monthTotal = 0;
     private double pSelected;
     private double cSelected;
+    public static boolean ignoreAnalyzed = true;
     private boolean toggleAnalyzed = false;
     private boolean isSettingsOpened = false;
     private boolean rememberDir = true;
     private boolean localRememberDir = true;
-    public static boolean ignoreAnalyzed = true;
     private boolean localIgnoreAnalyzed = true;
     
-    ColorAdjust colorAdjust = new ColorAdjust();
-   
-    private ObservableList<String> pOptions = FXCollections.observableArrayList("5/7","3/4","4/5");
-    private ObservableList<String> cOptions = FXCollections.observableArrayList("0.1", "0.2", "0.3");
-    
     public void getHelp(ActionEvent event) {
-		try {
-			if (env.contains("Windows")) {
-				Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
-						System.getProperty(initialDir) + FileManager.sep + FileManager.mriHelp);
-			} else if (env.contains("Mac")) {
-				Runtime.getRuntime().exec("open " + System.getProperty(initialDir) + FileManager.sep + FileManager.mriHelp);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileManager.getHelp();
 		labelFeedback.setText("");
     }
     
@@ -249,12 +237,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     
     public void getPatientDir(ActionEvent event) {
     	DirectoryChooser directoryChooser = new DirectoryChooser();
-    	directoryChooser.setInitialDirectory(new File(System.getProperty(initialDir)));
+    	directoryChooser.setInitialDirectory(new File(System.getProperty(FileManager.initialDir)));
     	directoryChooser.setTitle("Select MRI patient directory");
     	File prevPatientMonths = patientMonths;
     	patientMonths = directoryChooser.showDialog(null);
     	
-    	if (patientMonths != null && validateDir()) {
+    	if (patientMonths != null && FileManager.validateDir(patientMonths)) {
     		labelPatient.setText("Patient: " + patientMonths.getName());
         	setSelectedMonth();
         	setImageGrid(getPatientMonth());
@@ -361,7 +349,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     		toggleAnalyzed = !toggleAnalyzed;
     		if (toggleAnalyzed) {
     			buttonAnalyze.setEffect(colorAdjust);
-    			imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(dir, FileManager.sep, dir + FileManager.sep + currentMainImage)));
+    			imageMain.setImage(FileManager.setImage(Analyze.analyzeImage(
+    					dir, FileManager.sep, dir + FileManager.sep + currentMainImage)));
     		} else {
     			buttonAnalyze.setEffect(null);
     			imageMain.setImage(FileManager.setImage(dir + FileManager.sep + currentMainImage));
@@ -370,35 +359,6 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	} else {
     		labelFeedback.setText("No image selected");
     	}
-    }
-    
-    /*
-     * Checks that selected directory has appropriate data
-     */
-    public boolean validateDir() {
-    	int jpgCount = 0;
-    	monthTotal = 0;
-    	
-    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
-    		File month = patientMonths.listFiles()[i];
-    		
-			if (month.isDirectory()) {
-				monthTotal++;
-				for (int j = 0; j < month.listFiles().length; j++) {
-					String f = month.listFiles()[j].getName();
-	    			String[] split = f.split("\\.");
-	    			
-	    			if (split.length > 1 && split[1].equals("jpg")) {
-	    				jpgCount++;
-	    			}
-				}
-			} else {
-				System.out.println("Patient root contains non-directory files.");
-				return false;
-			}
-		}
-
-    	return jpgCount > 0 && jpgCount % FileManager.MRI_IMAGE_AMOUNT == 0;
     }
     
     /*
@@ -442,6 +402,9 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	return patientMonths.listFiles()[selectedMonth];
     }
     
+    /*
+     * Sets labels and updates main image with selected info and main image
+     */
     public void setGUIData(int i) {
     	int num = i + 1;
 		currentMainImage = fileNames.get(i);
@@ -519,7 +482,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 		imageChoose8.setImage(null);
 		
 		imageMain.setImage(null);
-		imageGraph.setImage(FileManager.setImage(System.getProperty(initialDir) + FileManager.sep + "blankgraph.jpg"));
+		imageGraph.setImage(FileManager.setImage(System.getProperty(FileManager.initialDir) + FileManager.sep + "blankgraph.jpg"));
     }
     
     /*
@@ -529,8 +492,6 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     @SuppressWarnings("unchecked")
 	@Override
     public void initialize(URL url, ResourceBundle rb) {
-    	env = System.getProperty("os.name");
-    	
     	comboBoxPValue.getItems().addAll(pOptions);
     	comboBoxPValue.setValue("5/7");
     	pSelected = Analyze.convertDouble((String)comboBoxPValue.getValue());
@@ -567,7 +528,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 			if (!s.equals("null")) {
 				patientMonths = new File(s);
 					
-				if (patientMonths.exists() && validateDir()) {
+				if (patientMonths.exists() && FileManager.validateDir(patientMonths)) {
 					labelPatient.setText("Patient: " + patientMonths.getName());
 					setSelectedMonth();
 					setImageGrid(getPatientMonth());

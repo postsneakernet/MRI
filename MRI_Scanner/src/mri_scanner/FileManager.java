@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 
 public class FileManager {
 	public final static String sep = File.separator;
+	public final static String initialDir = "user.dir";
 	public final static String areaData = "area.dat";
 	public final static String mriHelp = "MRI_Help.pdf";
 	public final static int MRI_IMAGE_AMOUNT = 8;
@@ -29,6 +30,23 @@ public class FileManager {
         }
         
         return SwingFXUtils.toFXImage(img, null);
+    }
+    
+    /*
+     * Opens user manual
+     */
+    public static void getHelp() {
+    	String env = System.getProperty("os.name");
+    	try {
+			if (env.contains("Windows")) {
+				Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
+						System.getProperty(initialDir) + sep + mriHelp);
+			} else if (env.contains("Mac")) {
+				Runtime.getRuntime().exec("open " + System.getProperty(initialDir) + sep + mriHelp);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
     /*
@@ -65,5 +83,35 @@ public class FileManager {
     	} catch (IOException e) {
     	  e.printStackTrace();
     	}
+    }
+    
+    /*
+     * Checks that selected directory has appropriate data
+     * Changes static variable monthTotal in FXMLDocumentController
+     */
+    public static boolean validateDir(File patientMonths) {
+    	int jpgCount = 0;
+    	FXMLDocumentController.monthTotal = 0;
+    	
+    	for (int i = 0; i < patientMonths.listFiles().length; i++) {
+    		File month = patientMonths.listFiles()[i];
+    		
+			if (month.isDirectory()) {
+				FXMLDocumentController.monthTotal++;
+				for (int j = 0; j < month.listFiles().length; j++) {
+					String f = month.listFiles()[j].getName();
+	    			String[] split = f.split("\\.");
+	    			
+	    			if (split.length > 1 && split[1].equals("jpg")) {
+	    				jpgCount++;
+	    			}
+				}
+			} else {
+				System.out.println("Patient root contains non-directory files.");
+				return false;
+			}
+		}
+
+    	return jpgCount > 0 && jpgCount % FileManager.MRI_IMAGE_AMOUNT == 0;
     }
 }

@@ -175,7 +175,6 @@ public class Analyze {
 		}
 
 		return tumorPixel;
-
 	}
 
 	/*
@@ -220,10 +219,11 @@ public class Analyze {
 		}
 
 		return newFileName;
-
-	
 	}
 
+	/*
+	 * Converts pixels to cm for area or volume
+	 */
 	public static double convertToCm(double pixels, boolean area) {
 		if (area) {
 			return pixels * PIXEL_SQUARE;
@@ -253,7 +253,8 @@ public class Analyze {
      * Adds area of tumor for each slice for each month to tumor arraylist
      * Uses previously calculated data from file if it exists
      * Otherwise calculates it and saves to file in month folder
-     * Units are in pixels
+     * Units are in pixels & cm
+     * changes static tumorArea in FXMLDocumentController
      */
     public static List<Double[]> getTumorArea(File patientMonths) {
     	List<Integer[]> tumorArea = new ArrayList<Integer[]>();
