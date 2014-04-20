@@ -146,6 +146,12 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private ObservableList<String> cOptions = FXCollections.observableArrayList("0.1", "0.2", "0.3");
     
     public void getHelp(ActionEvent event) {
+    	for (int i = 0; i < tumorArea.size(); i++) {
+    		for (int j = 0; j < tumorArea.get(i).length; j++) {
+    			System.out.println("Tumor Area: " + tumorArea.get(i)[j]);
+    		}
+    	}
+    	
 		try {
 			if (env.contains("Windows")) {
 				Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " +
@@ -483,7 +489,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	for (Integer[] iArray: tumorArea) {
     		Double[] cmMonthArea = new Double[MRI_IMAGE_AMOUNT];
     		for (int i = 0; i < iArray.length; i++) {
-    			cmMonthArea[i] = analysis.Analyze.convertToCm(iArray[i]);
+    			cmMonthArea[i] = analysis.Analyze.convertToCm(iArray[i], true);
     		}
     		
     		cmTumorArea.add(cmMonthArea);
@@ -544,15 +550,21 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     	}
     	
     	cmTumorVolume.clear();
-    	
-    	for (Double[] dArray: cmTumorArea) {
-    		monthVolume = 0;
-    		for (int i = 0; i < dArray.length; i++) {
-    			monthVolume += dArray[i];
-    		}
-    		
+    	// testing cm
+    	for (Double d: tumorVolume) {
+    		monthVolume = analysis.Analyze.convertToCm(d, false);
     		cmTumorVolume.add(monthVolume);
     	}
+    	
+    	// old version
+//    	for (Double[] dArray: cmTumorArea) {
+//    		monthVolume = 0;
+//    		for (int i = 0; i < dArray.length; i++) {
+//    			monthVolume += dArray[i];
+//    		}
+//    		
+//    		cmTumorVolume.add(monthVolume);
+//    	}
     }
     
     /*

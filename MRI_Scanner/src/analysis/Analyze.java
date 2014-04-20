@@ -11,7 +11,8 @@ import javax.imageio.ImageIO;
 
 public class Analyze {
 
-	final static double PIXEL_SQUARE = .0264583;
+	final static double PIXEL_SQUARE = .00070004;
+	final static double PIXEL_CUBE = .0000185254;
 	final static int brightness3 = 85;
 
 	/*
@@ -220,7 +221,11 @@ public class Analyze {
 	
 	}
 
-	public static double convertToCm(double pixels) {
-		return pixels * PIXEL_SQUARE;
+	public static double convertToCm(double pixels, boolean area) {
+		if (area) {
+			return pixels * PIXEL_SQUARE;
+		} else {
+			return pixels * PIXEL_CUBE;
+		}
 	}
 }
