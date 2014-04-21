@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -22,16 +21,15 @@ import javax.imageio.ImageIO;
 public class Graphing {
 
 	// final double pixelToCm = .0000185254;
-	static double alpha = 1.5; //1.5;
-	static double beta = 1.5;//1.5;
+	static double alpha =  1.5;
+	static double beta =  1.5;
 	static double gamma = 1;
 	// static double p = .75;
 	// static double c = .1;
 
-	final double pixelToCm = .0000185254;
+	final static double pixelToCm = .0000185254;
 
 	public double calcXCoord(double myVolume, double prevVolume) {
-		// V1 = alphaV^p(beta-gammaVsub1^(1-p))-c
 
 		return 0.0;
 	}
@@ -39,40 +37,14 @@ public class Graphing {
 	public static Image createGraph(List<Double> myData, double p, double c) {
 		BufferedImage img = null;
 
-		// ArrayList<double[]> abc = new ArrayList<double[]>();
-		//
-		// for (int i = 1; i < 30.0; i++) {
-		// double insert[] = new double[2];
-		// insert[0] = i;
-		// insert[1] = Math.log(i) / Math.log(2);
-		// abc.add(i - 1, insert);
-		//
-		// }
-
-		// double[] datVolume = new double[abc.size()];
-		// double[] myMonths = new double[abc.size()];
-		//
-		// for (int i = 0; i < abc.size(); i++) {
-		//
-		// myMonths[i] = abc.get(i)[0];
-		//
-		// datVolume[i] = abc.get(i)[1];
-		//
-		// }
-
-		double[] datVolume = new double[myData.size()+1];
-		double[] myMonths = new double[myData.size()+1];
+		double[] datVolume = new double[myData.size() + 1];
+		double[] myMonths = new double[myData.size() + 1];
 		datVolume[0] = 0;
 		myMonths[0] = 0;
-		
+
 		for (int i = 0; i < myData.size(); i++) {
-//			if (i == 0) {
-//				myMonths[i] = 0;
-//				datVolume[i] = 0;
-//			}else{
-				myMonths[i+1] = i+1;
-				datVolume[i+1] = myData.get(i);
-			//}
+			myMonths[i + 1] = i + 1;
+			datVolume[i + 1] = myData.get(i);
 		}
 
 		Chart chart = new Chart(564, 372);
@@ -80,16 +52,39 @@ public class Graphing {
 		chart.setChartTitle("Tumor Mapping");
 		chart.setXAxisTitle("Months");
 		chart.setYAxisTitle("Volume");
+		Color colorMarker = new Color(0xa503a5);
 		chart.getSeriesMap().get("Volume").setLineStyle(SeriesLineStyle.NONE);
+		chart.getSeriesMap().get("Volume").setMarkerColor(colorMarker);
 
 		double uSeriesX[] = new double[61];
 		double uSeriesY[] = new double[61];
+		double C2 = 0;
 		double V = 0;
 		int i = 0;
+		
+	
+		//beta = (datVolume[2]*datVolume[2] - datVolume[1]*datVolume[3] + (datVolume[3] - datVolume[2]) * c)/(datVolume[3]*Math.pow(datVolume[2], p) - datVolume[2]*datVolume[3]);
+		//gamma = Math.pow(datVolume[2], p-1) * beta + (datVolume[1] / datVolume[2]) - (c/Math.pow(datVolume[2], p-1)) -1;
+		
+		//beta = (datVolume[2]*datVolume[2] - datVolume[1]*datVolume[3])/(datVolume[3]*Math.pow(datVolume[2], p)-datVolume[2]*datVolume[3]);
+		//gamma = Math.pow(datVolume[2], p-1)*beta + (datVolume[1] / datVolume[2]);
+		
+		
+		//System.out.println(beta + "  " + gamma);
+		
 		for (double u = 0.0; u < 6; u += 0.1) {
 			// System.out.println(p);
-			V = (alpha) * (Math.pow(u, p))
-					* (beta - (gamma) * Math.pow(u, 1 - p)) - c;
+			
+
+			V = (alpha) * (Math.pow(u, p))* (beta - (gamma) * Math.pow(u, 1-p)) - c;
+//			if( u == 0.0){
+//				C2 = (alpha) * (Math.pow(u, p))* (beta - (gamma) * Math.pow(u, 1-p)) - c;
+//				V = Math.sqrt(C2*C2 -.01) + 0;
+//			}
+//			else{
+//				C2 = (alpha) * (Math.pow(u, p))* (beta - (gamma) * Math.pow(u, 1-p)) - c; //+ uSeriesY[i-1];
+//				V = Math.sqrt(C2*C2 -.01) + uSeriesY[i-1];
+//			}
 			// System.out.println(i);
 			uSeriesY[i] = V;
 			uSeriesX[i] = u;
@@ -99,6 +94,8 @@ public class Graphing {
 
 		Series series2 = chart.addSeries("GUE", uSeriesX, uSeriesY);
 		series2.setMarker(SeriesMarker.NONE);
+		Color colorLine = new Color(0xFF00FF);
+		series2.setLineColor(colorLine);
 
 		try {
 

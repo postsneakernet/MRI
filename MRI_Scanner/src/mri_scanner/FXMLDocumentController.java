@@ -123,7 +123,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private List<Double[]> cmTumorArea = new ArrayList<Double[]>();
     private List<Double> cmTumorVolume = new ArrayList<Double>();
     private ObservableList<String> pOptions = FXCollections.observableArrayList("5/7","3/4","4/5");
-    private ObservableList<String> cOptions = FXCollections.observableArrayList("0.1", "0.2", "0.3");
+    private ObservableList<String> cOptions = FXCollections.observableArrayList("0","0.1", "0.2", "0.3");
     private File patientMonths;
     public static int monthTotal = 0;
     private int selectedMonth = 0;
