@@ -1,16 +1,17 @@
 package mri_scanner;
 
 import analysis.Analyze;
+import analysis.FileManager;
 import analysis.Graphing;
 import analysis.Settings;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -122,8 +123,8 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
     private List<String> fileNames = new  ArrayList<String>();
     private List<Double[]> cmTumorArea = new ArrayList<Double[]>();
     private List<Double> cmTumorVolume = new ArrayList<Double>();
-    private ObservableList<String> pOptions = FXCollections.observableArrayList("5/7","3/4","4/5");
-    private ObservableList<String> cOptions = FXCollections.observableArrayList("0","0.1", "0.2", "0.3");
+    private ObservableList<String> pOptions = FXCollections.observableArrayList(FileManager.pData);
+    private ObservableList<String> cOptions = FXCollections.observableArrayList(FileManager.cData);
     private File patientMonths;
     public static int monthTotal = 0;
     private int selectedMonth = 0;
@@ -493,7 +494,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
 	@Override
     public void initialize(URL url, ResourceBundle rb) {
     	comboBoxPValue.getItems().addAll(pOptions);
-    	comboBoxPValue.setValue("5/7");
+    	comboBoxPValue.setValue(FileManager.pData[0]);
     	pSelected = Analyze.convertDouble((String)comboBoxPValue.getValue());
     	
     	comboBoxPValue.valueProperty().addListener(new ChangeListener<String>() {
@@ -506,7 +507,7 @@ public class FXMLDocumentController extends AnchorPane implements Initializable 
         });
     	
     	comboBoxCValue.getItems().addAll(cOptions);
-    	comboBoxCValue.setValue("0.1");
+    	comboBoxCValue.setValue(FileManager.cData[0]);
     	cSelected = Analyze.convertDouble((String)comboBoxCValue.getValue());
     	
     	comboBoxCValue.valueProperty().addListener(new ChangeListener<String>() {

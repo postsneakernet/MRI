@@ -10,10 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Brian
- */
 public class MRIPrototype extends Application {
     private Stage stage;    
     final private double MINIMUM_WINDOW_WIDTH = 400.0;

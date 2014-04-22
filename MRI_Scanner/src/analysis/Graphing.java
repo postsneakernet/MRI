@@ -19,18 +19,13 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 public class Graphing {
-
-	// final double pixelToCm = .0000185254;
 	static double alpha =  1.5;
 	static double beta =  1.5;
 	static double gamma = 1;
 	// static double p = .75;
 	// static double c = .1;
 
-	final static double pixelToCm = .0000185254;
-
 	public double calcXCoord(double myVolume, double prevVolume) {
-
 		return 0.0;
 	}
 
@@ -62,20 +57,17 @@ public class Graphing {
 		double V = 0;
 		int i = 0;
 		
-	
 		//beta = (datVolume[2]*datVolume[2] - datVolume[1]*datVolume[3] + (datVolume[3] - datVolume[2]) * c)/(datVolume[3]*Math.pow(datVolume[2], p) - datVolume[2]*datVolume[3]);
 		//gamma = Math.pow(datVolume[2], p-1) * beta + (datVolume[1] / datVolume[2]) - (c/Math.pow(datVolume[2], p-1)) -1;
 		
 		//beta = (datVolume[2]*datVolume[2] - datVolume[1]*datVolume[3])/(datVolume[3]*Math.pow(datVolume[2], p)-datVolume[2]*datVolume[3]);
 		//gamma = Math.pow(datVolume[2], p-1)*beta + (datVolume[1] / datVolume[2]);
 		
-		
 		//System.out.println(beta + "  " + gamma);
 		
 		for (double u = 0.0; u < 6; u += 0.1) {
 			// System.out.println(p);
 			
-
 			V = (alpha) * (Math.pow(u, p))* (beta - (gamma) * Math.pow(u, 1-p)) - c;
 //			if( u == 0.0){
 //				C2 = (alpha) * (Math.pow(u, p))* (beta - (gamma) * Math.pow(u, 1-p)) - c;
@@ -111,9 +103,4 @@ public class Graphing {
 
 		return SwingFXUtils.toFXImage(img, null);
 	}
-
-	public double convertToCm(double myVolume) {
-		return myVolume * this.pixelToCm;
-	}
-
 }

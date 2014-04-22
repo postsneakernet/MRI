@@ -12,7 +12,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import mri_scanner.FXMLDocumentController;
-import mri_scanner.FileManager;
 
 public class Analyze {
 	final static double PIXEL_SQUARE = .00070004;
@@ -138,6 +137,9 @@ public class Analyze {
 		return true;
 	}
 
+	/*
+	 * Returns amount of pixels in tumor, called on all images at patient directory load
+	 */
 	public static Integer analyzeImage(String fileName) {
 		HashSet<Point> region1 = null;
 		Integer tumorPixel = 0;
@@ -184,7 +186,6 @@ public class Analyze {
 
 		HashSet<Point> region1 = new HashSet<Point>();
 		BufferedImage imageIn;
-		BufferedImage imageOut;
 		String newFileName = null;
 		try {
 			imageIn = ImageIO.read(new File(fileName));

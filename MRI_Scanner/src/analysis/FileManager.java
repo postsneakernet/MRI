@@ -1,4 +1,4 @@
-package mri_scanner;
+package analysis;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -14,11 +14,15 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 
+import mri_scanner.FXMLDocumentController;
+
 public class FileManager {
 	public final static String sep = File.separator;
 	public final static String initialDir = "user.dir";
 	public final static String areaData = "area.dat";
 	public final static String mriHelp = "MRI_Help.pdf";
+	public final static String[] pData = {"2/3", "5/7", "3/4", "4/5"};
+	public final static String[] cData = {"0.0", "0.1", "0.2", "0.3"};
 	public final static int MRI_IMAGE_AMOUNT = 8;
 	
     public static Image setImage(String name) {

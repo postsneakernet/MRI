@@ -68,10 +68,4 @@ public class Settings {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) {
-		setDefaultProperties();
-		getDefaultProperties();
-		getProperty();
-	}
 }
